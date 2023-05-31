@@ -6,21 +6,55 @@
 }
 
 /* Swiper Buttons adjustment */
-.swiper-button-prev,
 .swiper-button-next {
   /* button styles */
+  margin-left: 100px;
 }
 
 /* input tag width for number in login form  */
 .react-tel-input .form-control {
   width: 350px;
-}
+} 
 
 .nav-link.active {
   text-decoration: underline;
 }
+<<<<<<< HEAD
 /* .css-1ufk433-MuiPaper-root-MuiDrawer-paper {
   box-shadow: beige;
 } */
 
 
+=======
+
+.css-1oqqzyl-MuiContainer-root {
+  padding: 0px;
+}
+
+.logout-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.logout-popup.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.css-12vja52-MuiToolbar-root{
+  padding-left: 0;
+  padding-right: 0;
+}
+.css-m1uy8a-MuiPaper-root-MuiCard-root{
+  box-shadow: 0;
+}
+>>>>>>> 3a386deeab3e770d2d22dd84bfec0de329f0005e

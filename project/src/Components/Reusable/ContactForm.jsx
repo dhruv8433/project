@@ -47,7 +47,7 @@ const ContactForm = () => {
           <Typography color="text.primary">Contact</Typography>
         </Breadcrumbs>
         <Typography variant="h4" gutterBottom>
-          <strong>Contact</strong>
+          <>Contact Us</>
         </Typography>
 
         <Grid
@@ -87,7 +87,8 @@ const ContactForm = () => {
                   <Typography
                     variant="h6"
                     fontSize={18}
-                    fontFamily={"Plus Jakarta Sans"}
+                    fontWeight={400}
+
                   >
                     +91 01234 56789
                   </Typography>
@@ -114,7 +115,8 @@ const ContactForm = () => {
                   <Typography
                     variant="h6"
                     fontSize={18}
-                    fontFamily={"Plus Jakarta Sans"}
+                    fontWeight={400}
+
                   >
                     info@edemand.com
                   </Typography>
@@ -141,7 +143,8 @@ const ContactForm = () => {
                   <Typography
                     variant="h6"
                     fontSize={18}
-                    fontFamily={"Plus Jakarta Sans"}
+                    fontWeight={400}
+
                   >
                     Time Square Empire Time <br /> Square Empire, Bhuj, Gujrat,{" "}
                     <br /> 370001{" "}
@@ -169,7 +172,7 @@ const ContactForm = () => {
                   <Typography
                     variant="h6"
                     fontSize={18}
-                    fontFamily={"Plus Jakarta Sans"}
+                    fontWeight={400}
                   >
                     9:00 AM to 7:00 PM
                   </Typography>
@@ -387,7 +390,7 @@ const ContactForm = () => {
         </Grid>
 
         {/* Map of location Time Square  */}
-      <Box marginTop={3} marginBottom={3}>
+      <Box marginTop={3} marginBottom={3} sx={{marginLeft: -3}}>
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3666.2857315616134!2d69.63917367160323!3d23.232687241309453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39511e6ca04d886d%3A0xd8714f0b27255ba9!2sTime%20Square%20Properties%20Pvt%20Ltd!5e0!3m2!1sen!2sin!4v1682322988724!5m2!1sen!2sin"
           width="100%"

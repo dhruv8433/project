@@ -44,9 +44,31 @@ import { BrowserRouter, Link, Route, Router, Routes } from "react-router-dom";
 import ProfilePayment from "./ProfilePayment";
 import RightContent from "./RightContent";
 import { useTheme } from "@emotion/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProfileNavigation = () => {
   const [open, setOpen] = React.useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [defname, setDefName] = useState("Murthy Bates");
+  const [defeml, setDefEml] = useState("Murthybates@gmail.com");
+  const [defnum, setDefNum] = useState("+9157818297");
+
+  const handleLogout = () => {
+    setIsVisible(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    // Clear the phone number value from local storage
+    localStorage.removeItem("phoneNumber");
+    localStorage.removeItem("ContactInfo");
+    setIsVisible(false);
+  };
+
+  const handleLogoutCancel = () => {
+    setIsVisible(false);
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -55,20 +77,30 @@ const ProfileNavigation = () => {
   };
 
   const submite = () => {
-    let name = document.getElementById("editName").value;
+    let Myname = document.getElementById("editName").value;
     let email = document.getElementById("editEmail").value;
     let phone = document.getElementById("editPhone").value;
 
-    console.log(name);
+    console.log(Myname);
     console.log(email);
     console.log(phone);
+
+    setDefName(Myname);
+    setDefEml(email);
+    setDefNum(phone);
+
+    localStorage.setItem("currentuser", Myname);
+    localStorage.setItem("currentemail", email);
+    localStorage.setItem("currentphone", phone);
+
+    toast.success("Update Successfully...");
   };
 
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <Grid>
-      <Grid item xs={12} maxWidth={'lg'}>
+      <Grid item xs={12} maxWidth={"lg"}>
         <Box display={"flex"} maxWidth={"100%"}>
           <Box
             sx={{
@@ -97,9 +129,9 @@ const ProfileNavigation = () => {
                 </Avatar>
               </ListItemDecorator>
               <div style={{ marginLeft: 10, color: "white" }}>
-                <Typography fontSize="xl">Murphy Bates</Typography>
-                <Typography fontSize="10px">murphybates@gmail.com</Typography>
-                <Typography fontSize="10px">+91 01234 56789</Typography>
+                <Typography fontSize="xl">{defname}</Typography>
+                <Typography fontSize="10px">{defeml}</Typography>
+                <Typography fontSize="10px">{defnum}</Typography>
               </div>
               <Button
                 variant="outlined"
@@ -172,6 +204,7 @@ const ProfileNavigation = () => {
                     <Box display={"block"}>
                       <FormLabel>Name</FormLabel>
                       <br />
+                      <form>
                       <TextField
                         id="editName"
                         placeholder="Enter name"
@@ -205,6 +238,7 @@ const ProfileNavigation = () => {
                         placeholder="Enter Phone"
                         size="small"
                         fullWidth
+                        required
                         variant="outlined"
                         sx={{ background: "#F2F1F6" }}
                       />{" "}
@@ -219,6 +253,19 @@ const ProfileNavigation = () => {
                       >
                         Save Profile
                       </Button>
+                      </form>
+                      <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
+                      />
                     </Box>
                     {/* form */}
                   </Box>
@@ -239,7 +286,10 @@ const ProfileNavigation = () => {
                   {/* booking address url  */}
                   <Link
                     to={"/profile/booking"}
-                    style={{ textDecoration: "none", color:  theme.palette.color.navLink }}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
                     primary="My Bookings"
                   >
                     Mybooking
@@ -268,7 +318,10 @@ const ProfileNavigation = () => {
                   </ListItemIcon>
                   <Link
                     to={"/profile/address"}
-                    style={{ textDecoration: "none", color:  theme.palette.color.navLink }}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
                     primary="My Bookings"
                   >
                     Manage Address
@@ -297,7 +350,10 @@ const ProfileNavigation = () => {
                   </ListItemIcon>
                   <Link
                     to={"/profile/payment"}
-                    style={{ textDecoration: "none", color:  theme.palette.color.navLink }}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
                     primary="My Bookings"
                   >
                     Payment
@@ -326,7 +382,10 @@ const ProfileNavigation = () => {
                   </ListItemIcon>
                   <Link
                     to={"/profile/bookmark"}
-                    style={{ textDecoration: "none", color:  theme.palette.color.navLink }}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
                     primary="My Bookings"
                   >
                     My Bookmark
@@ -358,7 +417,10 @@ const ProfileNavigation = () => {
                   </ListItemIcon>
                   <Link
                     to={"/profile/notifications"}
-                    style={{ textDecoration: "none", color:  theme.palette.color.navLink }}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
                     primary="My Bookings"
                   >
                     Notification
@@ -376,7 +438,7 @@ const ProfileNavigation = () => {
                 </ListItem>
               </Link>
               <Divider />
-              <Link to={"/profile/logout"} style={{ textDecoration: "none" }}>
+              <Link onClick={handleLogout} style={{ textDecoration: "none" }}>
                 <ListItem
                   button
                   sx={{ paddingTop: 1, paddingBottom: 1 }}
@@ -385,13 +447,36 @@ const ProfileNavigation = () => {
                   <ListItemIcon>
                     <Logout sx={{ color: "blue" }} />
                   </ListItemIcon>
+
                   <Link
-                    to={"/profile/logout"}
-                    style={{ textDecoration: "none", color:  theme.palette.color.navLink }}
+                    // to={"/profile/logout"}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
                     primary="My Bookings"
+                    onClick={handleLogout}
                   >
                     Logout
                   </Link>
+                  {isVisible && (
+                    <div
+                      className={`logout-popup ${isVisible ? "visible" : ""}`}
+                    >
+                      <p>Are you sure you want to log out?</p> <br />
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={handleLogoutConfirm}
+                      >
+                        Confirm
+                      </Button>
+                      <Button onClick={() => setIsVisible(false)}>
+                        Cancel
+                      </Button>
+                    </div>
+                  )}
+
                   <IconButton
                     sx={{
                       marginLeft: "auto",
@@ -416,7 +501,10 @@ const ProfileNavigation = () => {
                   </ListItemIcon>
                   <Link
                     to={"/profile/delete"}
-                    style={{ textDecoration: "none", color:  theme.palette.color.navLink }}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
                     primary="My Bookings"
                   >
                     Delete Account

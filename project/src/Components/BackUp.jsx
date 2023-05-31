@@ -1,5 +1,6 @@
-here some backup code available
- {/* <NavLink
+// here some backup code availablehh
+{
+  /* <NavLink
                   to="/"
                   style={({ isActive }) => {
                     return {
@@ -51,4 +52,22 @@ here some backup code available
                   }}
                 >
                   Contact
-                </NavLink> */}
+                </NavLink> */
+}
+
+//Removed redux files
+//Counter
+//REDUX File
+
+const counterReducer = (state = 0, action) => {
+  switch (action.type) {
+    case "INCREMENT":
+      return state + action.payload;
+    case "DECREMENT":
+      return state - 1;
+    default:
+      return state;
+  }
+};
+
+export default counterReducer;

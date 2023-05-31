@@ -1,16 +1,20 @@
 import React from "react";
 import {
   Box,
+<<<<<<< HEAD
   Breadcrumbs,
   Button,
+=======
+>>>>>>> 3a386deeab3e770d2d22dd84bfec0de329f0005e
   Card,
-  CardActions,
   CardContent,
-  CardMedia,
   Container,
+<<<<<<< HEAD
   Grid,
   IconButton,
   Link,
+=======
+>>>>>>> 3a386deeab3e770d2d22dd84bfec0de329f0005e
   Skeleton,
   Typography,
 } from "@mui/material";
@@ -26,7 +30,6 @@ import "swiper/css/navigation";
 import { Navigation, Pagination } from "swiper";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "@emotion/react";
-import NavigateCategorys from "./Profile/NavigateCategorys";
 
 const FetchingCategorys = () => {
   const [image, setImage] = useState([]);
@@ -84,19 +87,33 @@ const FetchingCategorys = () => {
               spaceBetween: 5,
             },
             768: {
+<<<<<<< HEAD
               slidesPerView: 4,
               spaceBetween: 5,
             },
             1024: {
               slidesPerView: 5,
               spaceBetween: 5,
+=======
+              slidesPerView: 3,
+              spaceBetween: 30,
             },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 20,
+>>>>>>> 3a386deeab3e770d2d22dd84bfec0de329f0005e
+            },
+            1200:{
+              slidesPerView: 5,
+              spaceBetween:30,
+            }
           }}
         >
           {isLoading ? (
             <Box>
               {image.map((response) => {
                 return (
+<<<<<<< HEAD
                   <>
                     <div className="swiper-button-prev">hi</div>
 
@@ -142,6 +159,43 @@ const FetchingCategorys = () => {
                             <p>{response.name}</p>
                           </NavLink>
                           {/* <Typography variant="body2" color="text.secondary">
+=======
+                  <SwiperSlide
+                    style={{ display: "flex", justifyContent: "space-around" }}
+                  >
+                    <Card
+                      key={response.id}
+                      sx={{
+                        mt: 3,
+                        mb: 2,
+                        width: 200,
+                        height: 200,
+                        border: "1px solid #e4e4e4",
+                        background: "white",
+                        boxShadow: 0
+                      }}
+                    >
+                      <img
+                        src={response.category_image}
+                        title={response.name}
+                        style={{ maxHeight: "100%", maxWidth: "100%", objectFit: "cover" }}
+                      />
+                      <CardContent sx={{ textAlign: "center", mt: -6 }}>
+                        <NavLink
+                          gutterBottom
+                          variant="a"
+                          // dynamic going to that page
+                          to={"/categorys/" + response.id}
+                          component="div"
+                          style={{
+                            textDecoration: "none",
+                            color: theme.palette.color.catLink,
+                          }}
+                        >
+                          <h4 style={{fontWeight: 400}}>{response.name}</h4>
+                        </NavLink>
+                        {/* <Typography variant="body2" color="text.secondary">
+>>>>>>> 3a386deeab3e770d2d22dd84bfec0de329f0005e
                         {response.admin_commission}+ Provider
                       </Typography> */}
                         </CardContent>

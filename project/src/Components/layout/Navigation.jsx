@@ -14,6 +14,7 @@ import {
   Avatar,
   Tabs,
   Tab,
+  Badge,
 } from "@mui/material";
 import { CgSpinner } from "react-icons/cg";
 import OtpInput from "otp-input-react";
@@ -35,6 +36,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 //for creating logo
 const StyledToolBar = styled(Toolbar)({
@@ -43,15 +45,40 @@ const StyledToolBar = styled(Toolbar)({
   maxWidth: "lg",
   justifyContent: "space-between",
 });
+<<<<<<< HEAD
+=======
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  borderRadius: "10px",
+  boxShadow: 24,
+};
+>>>>>>> 3a386deeab3e770d2d22dd84bfec0de329f0005e
 
 const label = { inputProps: { "area-label": "switch demo" } };
 const Navigation = ({ check, changeLight, changeDark }) => {
   let loggedInUser = localStorage.setItem("isLoggedIn", "");
-
+  let id = localStorage.getItem("Data");
   const [open, setOpen] = React.useState(false);
   const input = document.querySelector("#phone");
   const [login, isLogin] = React.useState(false);
   const [openSetting, setOpenSetting] = useState(false);
+  // First Attempts => set here to second goes from 60 to 0
+  // const [counter, setCounter] = React.useState(60);
+  const [otp, setOtp] = useState("");
+  const [ph, setPh] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showOTP, setShowOTP] = useState(false);
+  const [user, setUser] = useState(null);
+  const [value, setValue] = useState(0);
+  const [phoneNo, setPhoneNo] = useState("");
+  const [cart, setCart] = useState(false);
 
   const handleOpenSetting = () => {
     setOpenSetting(true);
@@ -66,20 +93,29 @@ const Navigation = ({ check, changeLight, changeDark }) => {
     isLogin(false);
   };
 
-  const [view, setView] = React.useState("list");
-  const handleChange = () =>
-    // event: React.MouseEvent<HTMLElement>,
-    // nextView: string
-    {
-      // setView(nextView);
-    };
+  const handleOpenCart = () => {
+    setCart(true);
+  };
 
-  const [otp, setOtp] = useState("");
-  const [ph, setPh] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [showOTP, setShowOTP] = useState(false);
-  const [user, setUser] = useState(null);
-  const [value, setValue] = useState(0);
+  const handleCloseCart = () => {
+    setCart(false);
+  };
+
+  localStorage.setItem("ContactInfo", "");
+
+  // mode change toggle
+  const [view, setView] = React.useState("list");
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    nextView: string
+  ) => {
+    setView(nextView);
+  };
+
+  const handlePhoneChange = (e) => {
+    setPhoneNo(e);
+    localStorage.setItem("temparory", e);
+  };
 
   const theme = useTheme();
 
@@ -138,9 +174,11 @@ const Navigation = ({ check, changeLight, changeDark }) => {
       });
   }
 
-  // For Verified User Icon
-  const sign_in = document.getElementById("sign_in");
-  const login_user = document.getElementById("logined_user");
+  const islogined = localStorage.getItem("ContactInfo");
+
+  // // For Verified User Icon #temparory
+  // const sign_in = document.getElementById("sign_in");
+  // const login_user = document.getElementById("logined_user");
 
   const navigate = useNavigate();
 
@@ -169,7 +207,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                 </IconButton>
                 {/* #Phone Menu  */}
                 {/* Set logo and burger menu in one side */}
-                <Box>
+                <div>
                   <Drawer open={open} onClose={() => setOpen(false)}>
                     <List>
                       <ListItemButton href="/">Home</ListItemButton>
@@ -190,13 +228,17 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                     style={{
                       textDecoration: "none",
                       fontSize: 20,
+<<<<<<< HEAD
+=======
+                      marginLeft: -23,
+>>>>>>> 3a386deeab3e770d2d22dd84bfec0de329f0005e
                       color: theme.palette.color.logo,
                     }}
                     to="/"
                   >
                     eDemmand
                   </NavLink>
-                </Box>
+                </div>
 
                 {/* Navigation Links  */}
               </Box>
@@ -204,32 +246,36 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                 <Tabs
                   sx={{ marginLeft: "auto" }}
                   indicatorColor="primary"
-                  defaultValue={0}
+                  // defaultValue={value}
                   value={value}
                   onChange={(e, value) => setValue(value)}
                 >
                   <Tab
-                    defaultChecked
+                    value={0}
                     onClick={() => navigate("/")}
                     sx={{ color: theme.palette.color.navLink }}
                     label="Home"
                   />
                   <Tab
+                    value={1}
                     onClick={() => navigate("/about")}
                     label="About Us"
                     sx={{ color: theme.palette.color.navLink }}
                   />
                   <Tab
+                    value={2}
                     onClick={() => navigate("/categorys")}
                     label="Category"
                     sx={{ color: theme.palette.color.navLink }}
                   />
                   <Tab
+                    value={3}
                     onClick={() => navigate("/providers")}
                     label="Providers"
                     sx={{ color: theme.palette.color.navLink }}
                   />
                   <Tab
+                    value={4}
                     onClick={() => navigate("/contact")}
                     label="Contact"
                     sx={{ color: theme.palette.color.navLink }}
@@ -238,29 +284,53 @@ const Navigation = ({ check, changeLight, changeDark }) => {
               </Box>
 
               {/* #Navigation Button functionality */}
-              <Box sx={{ display: "flex" }}>
-                <Button
-                  id="sign_in"
-                  variant="contained"
-                  startIcon={<AccountCircleIcon />}
-                  onClick={handleOpen}
-                >
-                  Sign in
-                </Button>
-                {/* Authorized user icon    */}
-                <IconButton
-                  id="logined_user"
-                  style={{
-                    display: "none",
-                    borderRadius: "100px",
-                    "&:hover": {
-                      backgroundColor: "white",
-                    },
-                  }}
-                  onClick={() => navigate("/profile")}
-                >
-                  <Avatar sx={{ height: "30px", width: "30px" }} />
+              <Box sx={{ display: "flex", marginRight: -4 }}>
+                {localStorage.getItem("ContactInfo") == "" ? (
+                  // if user is not logged in then show sign in button otherwise avatar of user
+                  <Button
+                    id="sign_in"
+                    variant="contained"
+                    startIcon={<AccountCircleIcon />}
+                    onClick={handleOpen}
+                  >
+                    Sign in
+                  </Button>
+                ) : (
+                  <>
+                    {/* #Authorized user icon    */}
+                    <IconButton
+                      id="logined_user"
+                      style={{
+                        display: "none",
+                        borderRadius: "100px",
+                        "&:hover": {
+                          backgroundColor: "white",
+                        },
+                      }}
+                      onClick={() => navigate("/profile")}
+                    >
+                      <Avatar sx={{ height: "30px", width: "30px" }} />
+                    </IconButton>
+                  </>
+                )}
+
+                <IconButton aria-label="cart" onClick={handleOpenCart}>
+                  {islogined === "" ? (
+                    <ShoppingCartOutlinedIcon />
+                  ) : (
+                    <Badge color="primary" variant="dot">
+                      <ShoppingCartOutlinedIcon />
+                    </Badge>
+                  )}
                 </IconButton>
+
+                <Drawer anchor="right" open={cart} onClose={handleCloseCart}>
+                    {
+                      // islogined === '' ? (<h1>Please Login...</h1>) : (<h1>Hello World</h1>) 
+                    }
+                  <Box sx={{ width: 300 }}></Box>
+                </Drawer>
+
                 <IconButton onClick={handleOpenSetting}>
                   <SettingsOutlinedIcon />{" "}
                 </IconButton>
@@ -281,9 +351,10 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                         >
                           <SettingsOutlinedIcon />
                         </IconButton>
+
                         <Typography
                           variant="h6"
-                          component="Box"
+                          component="div"
                           sx={{ flexGrow: 1 }}
                         >
                           eDemmand&nbsp;Setting
@@ -363,14 +434,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                     {user ? (
                       <Box>
                         <Typography>👍Login Success</Typography>
-                        {
-                          ((sign_in.style.display = "none"),
-                          (login_user.style.display = "block"),
-                          (loggedInUser = localStorage.setItem(
-                            "isLoggedIn",
-                            "Login"
-                          )))
-                        }
+                        {localStorage.setItem("ContactInfo", ph)}
                       </Box>
                     ) : (
                       <Box sx={{ justifyContent: "center" }}>

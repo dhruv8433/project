@@ -27,6 +27,7 @@ import theme, { darkTheme, lightTheme } from "./Theme";
 import { useState } from "react";
 import { useTheme } from "@emotion/react";
 import NavigateCategorys from "./Components/Reusable/Profile/NavigateCategorys";
+// import Logout from "./Components/layout/Logout";
 // import Countervalue from "./reducer/Countervalue";
 // import HandleSubmit, { GetCities } from "./Components/Reusable/Firebase";
 // import Firebase from "./Components/Reusable/Firebase";
@@ -43,25 +44,28 @@ let myStore = createStore(
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
-  
-  const handleChangeLight = () => {
-    setDarkMode(false)
-  }
 
+  const handleChangeLight = () => {
+    setDarkMode(false);
+  };
 
   const handleChangeDark = () => {
-    setDarkMode(true)
-  }
+    setDarkMode(true);
+  };
 
   return (
     // <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <Paper>
+        {/* Store for Redux */}
         <Provider store={myStore}>
           <div className="App">
             <BrowserRouter>
-              <Navigation check={darkMode} changeLight={handleChangeLight} changeDark={handleChangeDark} />
-              {/* <Button onClick={handleToggleDarkMode}>Mode</Button> */}
+              <Navigation
+                check={darkMode}
+                changeLight={handleChangeLight}
+                changeDark={handleChangeDark}
+              />
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/about" element={<About />}></Route>
@@ -78,10 +82,20 @@ function App() {
                   path="/providers/services/reviews"
                   element={<Reviews />}
                 ></Route>
-                <Route path="/categorys" element={<div style={{marginBottom: "100px"}}><Category /></div> }></Route>
+                <Route
+                  path="/categorys"
+                  element={
+                    <div style={{ marginBottom: "100px" }}>
+                      <Category />
+                    </div>
+                  }
+                ></Route>
                 <Route path="/contact" element={<Contact />}></Route>
 
-                <Route path="/categorys/:id" element={<NavigateCategorys />}></Route>
+                <Route
+                  path="/categorys/:id"
+                  element={<NavigateCategorys />}
+                ></Route>
 
                 {/* profile section  */}
 
@@ -101,11 +115,15 @@ function App() {
                   path="/profile/bookmark"
                   element={<ProfileBookmark />}
                 ></Route>
+                {/* <Route
+                  path="/profile/logout"
+                  element={<Logout />}
+                >  
+                </Route> */}
                 <Route
                   path="/profile/notifications"
                   element={<ProfileNotification />}
                 ></Route>
-                {/* <Route path="/calander" element={<Calander />}></Route> */}
                 <Route
                   path="/profile"
                   element={

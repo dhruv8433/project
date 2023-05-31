@@ -64,8 +64,14 @@ const FetchingServies = () => {
                 return (
                   <>
                     <Typography
+<<<<<<< HEAD
                       fontSize={theme.palette.fonts.h2}
                       fontWeight={500}
+=======
+                      fontSize={theme.palette.fonts.h1}
+                      marginBottom={1}
+                      // fontWeight={400}
+>>>>>>> 3a386deeab3e770d2d22dd84bfec0de329f0005e
                     >
                       {response.name}
                     </Typography>
@@ -112,11 +118,11 @@ const FetchingServies = () => {
               spaceBetween: 20,
             },
             768: {
-              slidesPerView: 4,
+              slidesPerView: 3,
               spaceBetween: 30,
             },
             1024: {
-              slidesPerView: 5,
+              slidesPerView: 4,
               spaceBetween: 30,
             },
           }}
@@ -128,16 +134,20 @@ const FetchingServies = () => {
                   <SwiperSlide
                     style={{ display: "flex", justifyContent: "space-around" }}
                   >
-                    <Card key={response.id}
-                      sx={{ width: 200, height: 200, borderRadius: "10px" }}
+                    <Card
+                      key={response.id}
+                      sx={{ width: 260, height: 220, borderRadius: "10px" }}
                     >
                       <img
                         src={response.category_image}
-                        title="Services"
+                        title={response.name}
                         style={{
                           height: "100%",
                           width: "100%",
                           filter: "brightness(0.8)",
+                          justifyContent: "center",
+                          objectFit: "cover",
+                          display: "flex",
                         }}
                       />
                       <Box marginTop={-5} textAlign={"center"}>
@@ -227,7 +237,6 @@ export const FetchingPlumbing = () => {
   };
   const theme = useTheme();
 
-
   useEffect(() => {
     fetchingFunction();
   }, []);
@@ -245,7 +254,7 @@ export const FetchingPlumbing = () => {
                   <>
                     <Typography
                       fontSize={theme.palette.fonts.h1}
-                      fontWeight={500}
+                      marginBottom={1}
                     >
                       {response.name}
                     </Typography>
@@ -293,11 +302,11 @@ export const FetchingPlumbing = () => {
               spaceBetween: 20,
             },
             768: {
-              slidesPerView: 4,
+              slidesPerView: 3,
               spaceBetween: 30,
             },
             1024: {
-              slidesPerView: 5,
+              slidesPerView: 4,
               spaceBetween: 30,
             },
           }}
@@ -310,16 +319,20 @@ export const FetchingPlumbing = () => {
                   <SwiperSlide
                     style={{ display: "flex", justifyContent: "space-around" }}
                   >
-                    <Card key={response.id}
-                      sx={{ width: 200, height: 200, borderRadius: "10px" }}
+                    <Card
+                      key={response.id}
+                      sx={{ width: 260, height: 220, borderRadius: "10px" }}
                     >
                       <img
                         src={response.category_image}
-                        title="Services"
+                        title={response.name}
                         style={{
                           height: "100%",
                           width: "100%",
                           filter: "brightness(0.8)",
+                          justifyContent: "center",
+                          objectFit: "cover",
+                          display: "flex",
                         }}
                       />
                       <Box marginTop={-5} textAlign={"center"}>
@@ -423,7 +436,7 @@ export const FetchingLaundry = () => {
                   <>
                     <Typography
                       fontSize={theme.palette.fonts.h1}
-                      fontWeight={500}
+                      marginBottom={1}
                     >
                       {response.name}
                     </Typography>
@@ -468,11 +481,11 @@ export const FetchingLaundry = () => {
               spaceBetween: 20,
             },
             768: {
-              slidesPerView: 4,
+              slidesPerView: 3,
               spaceBetween: 30,
             },
             1024: {
-              slidesPerView: 5,
+              slidesPerView: 4,
               spaceBetween: 30,
             },
           }}
@@ -485,16 +498,20 @@ export const FetchingLaundry = () => {
                   <SwiperSlide
                     style={{ display: "flex", justifyContent: "space-around" }}
                   >
-                    <Card key={response.id}
-                      sx={{ width: 200, height: 200, borderRadius: "10px" }}
+                    <Card
+                      key={response.id}
+                      sx={{ width: 260, height: 220, borderRadius: "10px" }}
                     >
                       <img
                         src={response.category_image}
-                        title="Services"
+                        title={response.name}
                         style={{
                           height: "100%",
                           width: "100%",
                           filter: "brightness(0.8)",
+                          justifyContent: "center",
+                          objectFit: "cover",
+                          display: "flex",
                         }}
                       />
                       <Box marginTop={-5} textAlign={"center"} color={"white"}>
@@ -598,8 +615,8 @@ export const FetchingCar = () => {
                 return (
                   <>
                     <Typography
-                      fontSize={theme.palette.fonts.h1}
-                      fontWeight={500}
+                     fontSize={theme.palette.fonts.h1}
+                     marginBottom={1}
                     >
                       {response.name}
                     </Typography>
@@ -646,11 +663,11 @@ export const FetchingCar = () => {
               spaceBetween: 20,
             },
             768: {
-              slidesPerView: 4,
+              slidesPerView: 3,
               spaceBetween: 30,
             },
             1024: {
-              slidesPerView: 5,
+              slidesPerView: 4,
               spaceBetween: 30,
             },
           }}
@@ -662,16 +679,20 @@ export const FetchingCar = () => {
                   <SwiperSlide
                     style={{ display: "flex", justifyContent: "space-around" }}
                   >
-                    <Card key={response.id}
-                      sx={{ width: 200, height: 200, borderRadius: "10px" }}
+                    <Card
+                      key={response.id}
+                      sx={{ width: 260, height: 220, borderRadius: "10px" }}
                     >
                       <img
                         src={response.category_image}
-                        title="Services"
+                        title={response.name}
                         style={{
                           height: "100%",
                           width: "100%",
                           filter: "brightness(0.8)",
+                          justifyContent: "center",
+                          objectFit: "cover",
+                          display: "flex",
                         }}
                       />
                       <Box marginTop={-5} textAlign={"center"} color={"white"}>

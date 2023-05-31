@@ -164,6 +164,7 @@ const HomePage = () => {
           >
             <GpsFixed />
           </button>
+<<<<<<< HEAD
           {/* 
 input  */}
 
@@ -191,6 +192,36 @@ input  */}
               Search
             </Button>
           </span>
+=======
+          <Box style={{ zIndex: 1 }} className="search" width={600}>
+            <TextField
+              ref={searchInput}
+              size="small"
+              type="text"
+              id="input_search"
+              fullWidth
+              className="form-control"
+              placeholder="Enter Location name,Area name etc..."
+              sx={{
+                zIndex: 1,
+                background: theme.palette.background.box,
+                // width:{xs: "200px", md: "auto"},
+              }}
+              InputProps={{
+                endAdornment: (
+                  <Button
+                    startIcon={<Search />}
+                    variant="contained"
+                    size="small"
+                    sx={{ paddingLeft: 2, paddingRight: 2, boxShadow: "none" }}
+                  >
+                    Search
+                  </Button>
+                ),
+              }}
+            />
+          </Box>
+>>>>>>> 3a386deeab3e770d2d22dd84bfec0de329f0005e
         </Box>
       </Container>
     </>
