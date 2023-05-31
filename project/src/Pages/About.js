@@ -1,12 +1,12 @@
 import React from 'react'
 import AboutPage from '../Components/Reusable/AboutPage'
-import Layout from '../Components/layout/Layout'
+import { Box } from '@mui/material'
 
 const About = () => {
   return (
-    <div>
+    <Box>
         <AboutPage />
-    </div>
+    </Box>
   )
 }
 

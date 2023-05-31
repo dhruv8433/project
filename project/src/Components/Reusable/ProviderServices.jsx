@@ -183,7 +183,7 @@ const ProviderServices = () => {
 
 export default ProviderServices;
 
-const RatingCard = ({}) => {
+const RatingCard = () => {
   return (
     <Box
       sx={{

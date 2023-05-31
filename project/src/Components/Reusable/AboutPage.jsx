@@ -16,7 +16,8 @@ function AboutPage() {
         <Typography color="text.primary">About</Typography>
       </Breadcrumbs>
       <Typography variant="h4" gutterBottom>
-        <strong>About Us</strong>
+        About Us
+        
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12}>

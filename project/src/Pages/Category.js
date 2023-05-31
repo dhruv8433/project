@@ -1,13 +1,13 @@
 import React from 'react'
-import Layout from '../Components/layout/Layout'
 import Categorys from '../Components/Reusable/Categorys'
+import { Box } from '@mui/material';
 
 const Category = () => {
     return (
-        <div>
+        <Box>
                 <Categorys />
-        </div>
+        </Box>
     )
 }
 
-export default Category
+export default Category;

@@ -50,10 +50,10 @@ const Categorys = () => {
           >
             Home
           </Link>
-          <Typography color="text.primary">category</Typography>
+          <Typography color="text.primary">Category</Typography>
         </Breadcrumbs>
         <Typography variant="h4" gutterBottom>
-          <strong>Categorys</strong>
+          Categorys
         </Typography>
 
         <FetchingCategorys />

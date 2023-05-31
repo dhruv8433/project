@@ -5,28 +5,25 @@ import {
   CardContent,
   CardMedia,
   Typography,
-  TextField,
   Grid,
   Drawer,
   Divider,
   Skeleton,
-  Modal,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import api from "../../API/Fetch_data_Api";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { Transert } from "../../actions/action";
-import TransferReducer from "../../reducer/TransferReducer";
+import { Visibility } from "@mui/icons-material";
 
 const ProviderService = (item) => {
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
   };
-  const Data = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   // const list_item = useSelector((state) => state.reducer);
   // const myData = useSelector(state => state.myReducer);
@@ -34,11 +31,10 @@ const ProviderService = (item) => {
   // const Data = useSelector(getData)
 
   // Here we create a function that open drawer as well as add item to that drawer
-  //  ✅ Working
+  // Working
 
   const handleOpen = (item) => {
     setOpen(true);
-    var data = item;
     console.info("clicked", item);
     dispatch(Transert(item));
   };
@@ -129,8 +125,8 @@ const ProviderService = (item) => {
                                 Add
                               </Button>
                               {/* ➡️ Open Drawer When user Click on Add Button  */}
-                              <Drawer anchor="right" open={open}>
-                                <Box>
+                              <Drawer anchor="right" open={open} hideBackdrop  >
+                                <Box sx={{backgroundColor:"white"}} >
                                   <Box
                                     display={"flex"}
                                     textAlign="center"

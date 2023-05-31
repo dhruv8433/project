@@ -123,7 +123,7 @@ async function get_providers() {
     redirect: "follow",
   };
   const response = await fetch(
-    "https://edemand.wrteam.me/api/v1/get_providers",
+    "https://edemand.wrteam.me/api/v1/get_providers?limit=4",
     requestOptions
   );
   const result = await response.json();

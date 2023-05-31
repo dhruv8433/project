@@ -1,12 +1,11 @@
-import React from 'react'
-import Layout from '../Components/layout/Layout'
-
+import { Box } from "@mui/material";
+import React from "react";
 const PageNotFound = () => {
   return (
-    <div>
-        <h1>404 : Page Not Found</h1>
-    </div>
-  )
-}
+    <Box>
+      <h1>404 : Page Not Found</h1>
+    </Box>
+  );
+};
 
-export default PageNotFound
+export default PageNotFound;

@@ -8,6 +8,7 @@ import {
   CardMedia,
   Container,
   Grid,
+  IconButton,
   Link,
   Skeleton,
   Typography,
@@ -22,6 +23,8 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "@emotion/react";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const FetchingServies = () => {
   const [image, setImage] = useState([]);
@@ -52,6 +55,8 @@ const FetchingServies = () => {
       <Box sx={{ paddingBottom: 1 }}>
         {/* ------------------------------------------------------------------ */}
         {/* Everything should be coming from api  */}
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+
         {isLoading ? (
           <Box>
             {title.map((response) => {
@@ -59,12 +64,11 @@ const FetchingServies = () => {
                 return (
                   <>
                     <Typography
-                      fontSize={theme.palette.fonts.h1}
+                      fontSize={theme.palette.fonts.h2}
                       fontWeight={500}
                     >
                       {response.name}
                     </Typography>
-                    <hr color="whitesmoke" />
                   </>
                 );
               }
@@ -75,6 +79,18 @@ const FetchingServies = () => {
             <Skeleton variant="text" sx={{ height: 50, width: 200 }}></Skeleton>
           </Box>
         )}
+         <Box>
+            <span className="previous-next-btn" sx={{ marginLeft: "auto" }}>
+              <IconButton aria-label="delete" color="primary">
+                <ArrowBackIosIcon />
+              </IconButton>
+              <IconButton aria-label="delete" color="primary">
+                <ArrowForwardIosIcon />
+              </IconButton>
+            </span>
+          </Box>
+        </Box>
+        <hr color="whitesmoke" />
       </Box>
       {/* ------------------------------------------------------------------------ */}
 
@@ -82,7 +98,7 @@ const FetchingServies = () => {
         <Swiper
           slidesPerView={5}
           freeMode={true}
-          navigation={true}
+          // navigation={true}
           style={{
             height: "auto",
           }}
@@ -219,6 +235,8 @@ export const FetchingPlumbing = () => {
   return (
     <Container>
       <Box sx={{ paddingBottom: 1 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+
         {isLoading ? (
           <Box>
             {title.map((response) => {
@@ -231,7 +249,9 @@ export const FetchingPlumbing = () => {
                     >
                       {response.name}
                     </Typography>
+              
                     <hr color="whitesmoke" />
+
                   </>
                 );
               }
@@ -242,12 +262,24 @@ export const FetchingPlumbing = () => {
             <Skeleton variant="text" sx={{ height: 50, width: 200 }}></Skeleton>
           </Box>
         )}
+             <Box>
+            <span className="previous-next-btn" sx={{ marginLeft: "auto" }}>
+              <IconButton aria-label="delete" color="primary">
+                <ArrowBackIosIcon />
+              </IconButton>
+              <IconButton aria-label="delete" color="primary">
+                <ArrowForwardIosIcon />
+              </IconButton>
+            </span>
+          </Box>
+        </Box>
+        <hr color="whitesmoke" />
       </Box>
       <Box sx={{ marginTop: 2, marginBottom: 2 }}>
         <Swiper
           slidesPerView={5}
           freeMode={true}
-          navigation={true}
+          // navigation={true}
           style={{
             height: "auto",
           }}
@@ -272,6 +304,7 @@ export const FetchingPlumbing = () => {
         >
           {isLoading ? (
             <Box>
+             
               {image.map((response) => {
                 return (
                   <SwiperSlide
@@ -380,6 +413,8 @@ export const FetchingLaundry = () => {
   return (
     <Container>
       <Box sx={{ paddingBottom: 1 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+
         {isLoading ? (
           <Box>
             {title.map((response) => {
@@ -392,7 +427,6 @@ export const FetchingLaundry = () => {
                     >
                       {response.name}
                     </Typography>
-                    <hr color="whitesmoke" />
                   </>
                 );
               }
@@ -403,12 +437,24 @@ export const FetchingLaundry = () => {
             <Skeleton variant="text" sx={{ height: 50, width: 200 }}></Skeleton>
           </Box>
         )}
+        <Box>
+            <span className="previous-next-btn" sx={{ marginLeft: "auto" }}>
+              <IconButton aria-label="delete" color="primary">
+                <ArrowBackIosIcon />
+              </IconButton>
+              <IconButton aria-label="delete" color="primary">
+                <ArrowForwardIosIcon />
+              </IconButton>
+            </span>
+          </Box>
+        </Box>
+        <hr color="whitesmoke" />
       </Box>
       <Box sx={{ marginTop: 2, marginBottom: 2 }}>
         <Swiper
           slidesPerView={5}
           freeMode={true}
-          navigation={true}
+          // navigation={true}
           style={{
             height: "auto",
           }}
@@ -433,6 +479,7 @@ export const FetchingLaundry = () => {
         >
           {isLoading ? (
             <Box>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               {image.map((response) => {
                 return (
                   <SwiperSlide
@@ -472,6 +519,7 @@ export const FetchingLaundry = () => {
                   </SwiperSlide>
                 );
               })}
+              </Box>
             </Box>
           ) : (
             <Box display={"flex"} gap={2}>
@@ -541,6 +589,8 @@ export const FetchingCar = () => {
   return (
     <Container>
       <Box sx={{ paddingBottom: 1 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+
         {isLoading ? (
           <Box>
             {title.map((response) => {
@@ -553,7 +603,8 @@ export const FetchingCar = () => {
                     >
                       {response.name}
                     </Typography>
-                    <hr color="whitesmoke" />
+                    
+                   
                   </>
                 );
               }
@@ -564,12 +615,24 @@ export const FetchingCar = () => {
             <Skeleton variant="text" sx={{ height: 50, width: 200 }}></Skeleton>
           </Box>
         )}
+        <Box>
+            <span className="previous-next-btn" sx={{ marginLeft: "auto" }}>
+              <IconButton aria-label="delete" color="primary">
+                <ArrowBackIosIcon />
+              </IconButton>
+              <IconButton aria-label="delete" color="primary">
+                <ArrowForwardIosIcon />
+              </IconButton>
+            </span>
+          </Box>
+        </Box>
+        <hr color="whitesmoke" />
       </Box>
       <Box sx={{ marginTop: 2, marginBottom: 2 }}>
         <Swiper
           slidesPerView={5}
           freeMode={true}
-          navigation={true}
+          // navigation={true}
           style={{
             height: "auto",
           }}

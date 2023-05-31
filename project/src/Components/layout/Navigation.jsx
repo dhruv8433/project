@@ -11,7 +11,6 @@ import {
   Drawer,
   Container,
   Backdrop,
-  createTheme,
   Avatar,
   Tabs,
   Tab,
@@ -22,13 +21,13 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../../firebase/config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { toast, Toaster } from "react-hot-toast";
+import { toast} from "react-hot-toast";
 import ClearIcon from "@mui/icons-material/Clear";
 import "intl-tel-input/build/css/intlTelInput.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { useTheme } from "@emotion/react";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -44,20 +43,8 @@ const StyledToolBar = styled(Toolbar)({
   maxWidth: "lg",
   justifyContent: "space-between",
 });
-// const style = {
-//   position: "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: 400,
-//   bgcolor: "background.paper",
-//   border: "2px solid #000",
-//   borderRadius: "10px",
-//   boxShadow: 24,
-// };
 
 const label = { inputProps: { "area-label": "switch demo" } };
-
 const Navigation = ({ check, changeLight, changeDark }) => {
   let loggedInUser = localStorage.setItem("isLoggedIn", "");
 
@@ -160,6 +147,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
   return (
     <Box>
       <AppBar
+        className="appbar"
         position="sticky"
         style={{
           backgroundColor: theme.palette.background.box,
@@ -174,7 +162,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                   color="inherit"
                   aria-label="open-drawer"
                   edge="start"
-                  sx={{ display: { md: "none" } }}
+                  sx={{ mr: 2, display: { md: "none" } }}
                   onClick={() => setOpen(true)}
                 >
                   <MenuIcon />
@@ -202,7 +190,6 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                     style={{
                       textDecoration: "none",
                       fontSize: 20,
-                 
                       color: theme.palette.color.logo,
                     }}
                     to="/"
@@ -290,6 +277,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                           edge="start"
                           color="inherit"
                           aria-label="menu"
+                          // sx={{ mr: 2 }}
                         >
                           <SettingsOutlinedIcon />
                         </IconButton>
@@ -501,7 +489,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                               &nbsp;
                               <p style={{ color: theme.palette.color.navLink }}>
                                 &
-                              </p>{" "}
+                              </p>
                               &nbsp;
                               <NavLink
                                 style={{ color: theme.palette.color.navLink }}

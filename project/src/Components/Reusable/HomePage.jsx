@@ -149,6 +149,8 @@ const HomePage = () => {
             alignItems: "center",
             justifyContent: "center",
             display: "flex",
+            marginLeft: 30,
+            marginRight: 30,
           }}
         >
           <button
@@ -156,40 +158,39 @@ const HomePage = () => {
               zIndex: 1,
               height: 40,
               background: theme.palette.background.box,
-              border: 0,
+              // borderRadius:'10px',
             }}
             onClick={findMyLocation}
           >
             <GpsFixed />
           </button>
-          <Box style={{ zIndex: 1 }} className="search">
-            <TextField
-              ref={searchInput}
-              size="small"
-              type="text"
-              id="input_search"
-              className="form-control"
-              placeholder="Enter Location name,Area name etc..."
-              sx={{
-                zIndex: 1,
-                background: theme.palette.background.box,
-                width:{xs: "100px", md: "auto"},
-              }}
-              InputProps={{
-                endAdornment: (
-                  <Button
-                    startIcon={<Search />}
-                    variant="contained"
-                    size="small"
-                    sx={{ paddingLeft: 2, paddingRight: 2, boxShadow: "none" }}
-                  >
-                    {" "}
-                    Search{" "}
-                  </Button>
-                ),
-              }}
-            />
-          </Box>
+          {/* 
+input  */}
+
+          <TextField
+            ref={searchInput}
+            size="small"
+            type="text"
+            id="input_search"
+            className="form-control"
+            fullWidth
+            placeholder="Enter Location name,Area name etc..."
+            sx={{
+              zIndex: 1,
+              background: theme.palette.background.box,
+              borderRadius: 0,
+            }}
+          />
+
+          <span>
+            <Button
+              variant="contained"
+              startIcon={<Search />}
+              sx={{ zIndex: 1 }}
+            >
+              Search
+            </Button>
+          </span>
         </Box>
       </Container>
     </>

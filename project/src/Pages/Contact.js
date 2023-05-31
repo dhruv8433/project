@@ -1,12 +1,12 @@
 import React from 'react'
 import ContactForm from '../Components/Reusable/ContactForm'
-import Layout from '../Components/layout/Layout'
+import { Box } from '@mui/material'
 
 const Contact = () => {
   return (
-    <div>
+    <Box>
         <ContactForm />
-    </div>
+    </Box>
   )
 }
 

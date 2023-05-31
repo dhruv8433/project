@@ -1,12 +1,12 @@
 import React from "react";
 import Providers from "../Components/Reusable/Providers";
-import Layout from "../Components/layout/Layout";
+import { Box } from "@mui/material";
 
 const Provider = () => {
   return (
-    <div>
+    <Box>
       <Providers />
-    </div>
+    </Box>
   );
 };
 

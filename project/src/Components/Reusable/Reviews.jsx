@@ -1,14 +1,11 @@
 import {
-  Avatar,
   Box,
   Breadcrumbs,
   Container,
   Link,
-  Rating,
   Typography,
 } from "@mui/material";
 import React from "react";
-import Navigation from "../layout/Navigation";
 import CustomerReview from "./CustomerReview";
 import { useTheme } from "@emotion/react";
 import { useNavigate } from "react-router";

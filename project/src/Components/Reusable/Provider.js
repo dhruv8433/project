@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, Grid, Rating, Skeleton } from "@mui/material";
-import { ArrowRight, ArrowRightAltOutlined, Done } from "@mui/icons-material";
-import ProviderServices from "./ProviderServices";
+import {ArrowRightAltOutlined, Done } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
 import api from "../../API/Fetch_data_Api";
 import { useTheme } from "@emotion/react";
