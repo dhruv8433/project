@@ -25,6 +25,8 @@ const rows = [
 ];
 
 const ProfilePayment = () => {
+  document.title = "profile - payment | eDemand"
+
   const theme = useTheme()
   return (
     <Container>

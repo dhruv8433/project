@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import Providers from "./Pages/Provider";
@@ -10,8 +10,8 @@ import Reviews from "./Components/Reusable/Reviews";
 import Navigation from "./Components/layout/Navigation";
 import ProfileNavigation from "./Components/Reusable/Profile/ProfileNavigation";
 import ProfilePayment from "./Components/Reusable/Profile/ProfilePayment";
-import { Button, Container, Paper } from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Container, Paper } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 import ProfileBooking from "./Components/Reusable/Profile/ProfileBooking";
 import ProfileAddress from "./Components/Reusable/Profile/ProfileAddress";
 import ProfileBookmark from "./Components/Reusable/Profile/ProfileBookmark";
@@ -23,20 +23,16 @@ import { createStore } from "redux";
 import allReducers from "./reducer";
 // Provider can connect our global state our store to app
 import { Provider } from "react-redux";
-import theme, { darkTheme, lightTheme } from "./Theme";
-import { useState } from "react";
-import { useTheme } from "@emotion/react";
+import { darkTheme, lightTheme } from "./Theme";
+import { useEffect, useState } from "react";
 import NavigateCategorys from "./Components/Reusable/Profile/NavigateCategorys";
 import Logout from "./Pages/Logout";
 import DeleteAccount from "./Pages/DeleteAccount";
-// import Logout from "./Components/layout/Logout";
-// import Countervalue from "./reducer/Countervalue";
-// import HandleSubmit, { GetCities } from "./Components/Reusable/Firebase";
-// import Firebase from "./Components/Reusable/Firebase";
-// import CssBaseline from "@mui/material/CssBaseline";
-// import theme from "./Theme";
-// import MyApp from "./Components/layout/ThemeButton";
-// import ToggleColorMode from "./Components/layout/ThemeButton";
+import StartPage from "./Pages/StartPage";
+import Access from "./Pages/Access";
+import { ToastContainer, toast } from "react-toastify";
+import Privacy_Policy from "./Components/Reusable/Privacy_Policy";
+import Terms from "./Components/Reusable/Terms";
 
 // Store -> Globalized State
 let myStore = createStore(
@@ -55,105 +51,146 @@ function App() {
     setDarkMode(true);
   };
 
+  if (!localStorage.getItem('isLoggedIn')) {
+    // Set the variable to an empty value if it doesn't exist
+    localStorage.setItem('isLoggedIn', '');
+  }
+  if (!localStorage.getItem('ContactInfo')) {
+    // Set the variable to an empty value if it doesn't exist
+    localStorage.setItem('ContactInfo', '');
+  }
+  if (!localStorage.getItem('ProfilePicture')) {
+    // Set the variable to an empty value if it doesn't exist
+    localStorage.setItem('ProfilePicture', '');
+  }
+
+  const handlePlaceSelected = (place) => {
+    // Handle the selected place here
+    console.log("Selected place:", place);
+  };
+
+  let loginInfo = localStorage.getItem("isLoggedIn");
+  let providerAvailable = localStorage.getItem("providerAvailable");
+
+  useEffect(() => { providerAvailable = localStorage.getItem("providerAvailable") }, [])
+
   return (
-    // <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <Paper>
         {/* Store for Redux */}
         <Provider store={myStore}>
           <div className="App">
             <BrowserRouter>
-              <Navigation
-                check={darkMode}
-                changeLight={handleChangeLight}
-                changeDark={handleChangeDark}
-              />
+              {providerAvailable ? (
+                <Navigation
+                  check={darkMode}
+                  changeLight={handleChangeLight}
+                  changeDark={handleChangeDark}
+                />
+              ) : null}
               <br />
               <br />
               <br />
               <Routes>
-                <Route path="/" element={<Home />}></Route>
-                <Route path="/about" element={<About />}></Route>
-                <Route path="/providers" element={<Providers />}></Route>
-
                 <Route
-                  path="/providers/services/payment"
-                  element={<PaymentPage />}
-                ></Route>
-                <Route
-                  path="/providers/services/reviews"
-                  element={<Reviews />}
-                ></Route>
-                <Route
-                  path="/categorys"
+                  path="/"
                   element={
-                    <div style={{ marginBottom: "100px" }}>
-                      <Category />
-                    </div>
+                    providerAvailable ? <Home /> : <StartPage />
                   }
-                ></Route>
-                <Route path="/contact" element={<Contact />}></Route>
+                />
+                <>
+                  {/* <Route
+                    path="/home"
+                    element={providerAvailable ? 
+                      <Home onPlaceSelected={handlePlaceSelected} /> : <StartPage />
+                    }
+                  /> */}
+                  <Route path="/about" element={providerAvailable ? <About /> : <StartPage />} />
+                  <Route path="/providers" element={<Providers />} />
+                  <Route
+                    path="/providers/services/payment"
+                    element={providerAvailable ? <PaymentPage /> : <StartPage />}
+                  />
+                  <Route
+                    path="/providers/services/reviews"
+                    element={providerAvailable ? <Reviews /> : <StartPage />}
+                  />
+                  <Route
+                    path="/categories"
+                    element={providerAvailable ?
+                      <div style={{ marginBottom: "100px" }}>
+                        <Category />
+                      </div> : <StartPage />
+                    }
+                  />
+                  <Route path="/contact" element={providerAvailable ? <Contact /> : <StartPage />} />
+                  <Route
+                    path="/providers/services/:partner_id/:company_name"
+                    element={providerAvailable ? <ProviderServices /> : <StartPage />}
+                  />
+                  <Route
+                    path="/categories/:id/:title"
+                    element={providerAvailable ? <NavigateCategorys /> : <StartPage />}
+                  />
+                  <Route
+                    path="/privacy-policies"
+                    element={providerAvailable ? <Privacy_Policy /> : <StartPage />}
+                  />
+                  <Route
+                    path="/terms-and-conditions"
+                    element={providerAvailable ? <Terms /> : <StartPage />}
+                  />
+                </>
+                )
 
-                <Route
-                  path="/providers/services/:partner_id"
-                  element={<ProviderServices />}
-                ></Route>
-
-                <Route
-                  path="/categorys/:id"
-                  element={<NavigateCategorys />}
-                ></Route>
-
-                {/* profile section  */}
+                {/* profile section */}
 
                 <Route
                   path="/profile/address"
-                  element={<ProfileAddress />}
-                ></Route>
+                  element={loginInfo ? <ProfileAddress /> : <Navigate to={'/'} /> }
+                />
                 <Route
                   path="/profile/payment"
-                  element={<ProfilePayment />}
-                ></Route>
+                  element={loginInfo ? <ProfilePayment /> : <Navigate to={'/'} />}
+                />
                 <Route
                   path="/profile/booking"
-                  element={<ProfileBooking />}
-                ></Route>
+                  element={loginInfo ? <ProfileBooking /> : <Navigate to={'/'} />}
+                />
                 <Route
                   path="/profile/bookmark"
-                  element={<ProfileBookmark />}
-                ></Route>
-                {/* <Route
-                  path="/profile/logout"
-                  element={<Logout />}
-                >  
-                </Route> */}
+                  element={loginInfo ? <ProfileBookmark /> : <Navigate to={'/'} />}
+                />
                 <Route
                   path="/profile/notifications"
-                  element={<ProfileNotification />}
-                ></Route>
+                  element={loginInfo ? <ProfileNotification /> : <Navigate to={'/'} />}
+                />
                 <Route
                   path="/profile"
                   element={
+                    loginInfo ? 
                     <>
                       <Container>
                         <ProfileNavigation />
                       </Container>
-                    </>
+                      </> : <Navigate to={'/'} />
                   }
-                ></Route>
-                <Route path="/profile/logout" element={<Logout/>}>
-                  </Route>
-                <Route path="/profile/delete" element={<DeleteAccount/>}>
-                  </Route>
+                />
+                <Route path="/profile/logout" element={loginInfo ? <Logout /> : <Navigate to={'/'} />} />
+                <Route
+                  path="/profile/delete"
+                  element={loginInfo ? <DeleteAccount /> : <Navigate to={'/'} />}
+                />
 
                 {/* 404 Page Not Found */}
-                <Route path="/*" element={<PageNotFound />}></Route>
+                <Route path="/*" element={<PageNotFound />} />
               </Routes>
-              <Footer />
+              {providerAvailable ? <Footer /> : null}
             </BrowserRouter>
           </div>
         </Provider>
       </Paper>
+      <ToastContainer />
     </ThemeProvider>
   );
 }

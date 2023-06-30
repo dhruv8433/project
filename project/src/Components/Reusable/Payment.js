@@ -25,6 +25,9 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 const steps = ["Select The Address", "Confirm Your Payment"];
 
 export default function PaymentPage() {
+
+  document.title = "payment | eDemand"
+
   const amount = localStorage.getItem("Pay") * 100;
 
   const [activeStep, setActiveStep] = React.useState(0);

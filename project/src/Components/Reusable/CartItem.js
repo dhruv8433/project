@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
 
 const CartItem = ({ item, onDelete, onQuantityChange, itemQuantities }) => {
   const handleIncrement = () => {
@@ -142,7 +143,7 @@ const Cart = () => {
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
-      `Bearer ${localStorage.getItem("Token")}`
+      `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzkzOTQwNzYsImlzcyI6ImVkZW1hbmQiLCJleHAiOjE3MTA5MzAwNzYsInN1YiI6ImVkZW1hbmRfYXV0aGVudGljYXRpb24iLCJ1c2VyX2lkIjoiNTUzIn0.gaszZFmh4bfyEpBQTAKVJMyxYAkKx8BYzx8EJZjimZI`
     );
 
     var formdata = new FormData();
@@ -161,6 +162,7 @@ const Cart = () => {
           throw new Error("Request failed");
         }
         console.log("API request successful");
+        toast.success("Added to cart")
       })
       .catch((error) => {
         console.error("An error occurred:", error);
@@ -184,11 +186,14 @@ const Cart = () => {
         <br />
         {cartData.length === 0 ? (
           <Box sx={{ textAlign: "center" }}>
+            <img src="https://img.freepik.com/free-vector/corrugated-box-white-background_1308-111117.jpg"
+              style={{
+                width: "220px",
+                borderRadius: "500px",
+                marginTop: "150px",
+              }} />
             <h3>No Products here!</h3>
-            <br />
-            Your cart is empty. Login & Add products <br /> so that we can serve
-            you!
-            <h4 style={{ color: "gray" }}>can serve you!</h4>
+
           </Box>
         ) : (
           <>
@@ -209,10 +214,15 @@ const Cart = () => {
             </Typography>
           </>
         )}
+        {cartData.length === 0 ? (
+          ""
+        ) : (
+          <Button fullWidth variant="contained" onClick={handleRequest}>
+            Continue
+          </Button>
+        )}
 
-        <Button fullWidth variant="contained" onClick={handleRequest}>
-          Continue
-        </Button>
+        <ToastContainer />
       </Box>
     </div>
   );

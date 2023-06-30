@@ -20,6 +20,8 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper";
 import { NavLink, useNavigate } from "react-router-dom";
 import FetchingCategorys from "./FetchingCategorys";
+import { useTheme } from "@emotion/react";
+import { t } from "i18next";
 
 const Categorys = () => {
   const [image, setImage] = useState([]);
@@ -35,27 +37,30 @@ const Categorys = () => {
   };
 
   const navigate = useNavigate()
-
+  const theme = useTheme();
   return (
     <div>
-      <Container maxWidth="lg">
-        <Breadcrumbs
-          aria-label="breadcrumb"
-          sx={{ marginBottom: 1, marginTop: 1 }}
-        >
-          <Link
-            sx={{ cursor: "pointer", textDecoration: "none" }}
-            color="inherit"
-            onClick={() => navigate("/")}
+      <Box paddingTop={"15px"} paddingBottom={"15px"} mb={"20px"}>
+        <Container maxWidth="lg">
+          <Breadcrumbs
+            aria-label="breadcrumb"
+            sx={{ marginBottom: 1, marginTop: 1 }}
           >
-            Home
-          </Link>
-          <Typography color="text.primary">category</Typography>
-        </Breadcrumbs>
-        <Typography variant="h4" gutterBottom>
-          <>Categorys</>
-        </Typography>
-
+            <Link
+              sx={{ cursor: "pointer", textDecoration: "none" }}
+              color="inherit"
+              onClick={() => navigate("/")}
+            >
+              {t("Home")}
+            </Link>
+            <Typography color="text.primary">{t("categories")}</Typography>
+          </Breadcrumbs>
+          <Typography variant="h4" gutterBottom>
+            <>{t("Categories")}</>
+          </Typography>
+        </Container>
+      </Box>
+      <Container sx={{mt:"80px"}} maxWidth="xl">
         <FetchingCategorys />
       </Container>
     </div>

@@ -18,6 +18,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Pagination from "@mui/material/Pagination";
 import api from "../../API/Fetch_data_Api";
 import { Transert } from "../../actions/action";
+import { t } from "i18next";
 
 const ProviderService = ({ match }) => {
   const [open, setOpen] = React.useState(false);
@@ -78,7 +79,7 @@ const ProviderService = ({ match }) => {
     );
     setTotalPages(Math.ceil(response.headers["x-total-count"] / 5));
     const result = await response.json();
-    console.log(result);
+    // console.log(result);
     return result;
   }
 
@@ -92,7 +93,7 @@ const ProviderService = ({ match }) => {
     allData()
       .then((response) => setServices(response.data))
       .then((response) => setIsLoading(true))
-      .then((response) => console.log(response));
+      // .then((response) => console.log(response));
   }, [currentPage]);
 
   const handlePageChange = (event, value) => {
@@ -107,7 +108,6 @@ const ProviderService = ({ match }) => {
 
   return (
     <Box>
-      <ToastContainer /> {/* Move ToastContainer outside the loop */}
       {isLoading ? (
         <Box>
           {getPaginatedServices().map((response) => {
@@ -178,8 +178,9 @@ const ProviderService = ({ match }) => {
                                   float="right"
                                   size="small"
                                 >
-                                  Add
+                                  {t("Add")}
                                 </Button>
+                                <ToastContainer />
                               </Box>
                             </Box>
                           </Box>
@@ -192,11 +193,11 @@ const ProviderService = ({ match }) => {
               );
             }
           })}
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+          {/* <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
             <Stack spacing={2}>
               <Pagination count={3} color="primary" />
             </Stack>
-          </Box>
+          </Box> */}
         </Box>
       ) : (
         <Box>

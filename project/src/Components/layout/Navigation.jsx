@@ -6,17 +6,18 @@ import {
   Typography,
   styled,
   IconButton,
-  List,
-  ListItemButton,
   Drawer,
   Container,
   Backdrop,
-  createTheme,
   Avatar,
   Tabs,
   Tab,
-  Badge,
-  Divider,
+  Select,
+  OutlinedInput,
+  MenuItem,
+  InputLabel,
+  FormControl,
+
 } from "@mui/material";
 import { CgSpinner } from "react-icons/cg";
 import OtpInput from "otp-input-react";
@@ -24,13 +25,13 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../../firebase/config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import ClearIcon from "@mui/icons-material/Clear";
 import "intl-tel-input/build/css/intlTelInput.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -39,9 +40,9 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 // import CartItem from "../Reusable/CartItem";
 import Cart from "../Reusable/CartItem";
+import { useTranslation } from "react-i18next";
 
 //for creating logo
 const StyledToolBar = styled(Toolbar)({
@@ -51,17 +52,7 @@ const StyledToolBar = styled(Toolbar)({
   justifyContent: "space-between",
 });
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  borderRadius: "10px",
-  boxShadow: 24,
-};
+
 
 const activeTabStyle = {
   "&.Mui-selected": {
@@ -71,11 +62,11 @@ const activeTabStyle = {
   },
 };
 
-const label = { inputProps: { "area-label": "switch demo" } };
+// const label = { inputProps: { "area-label": "switch demo" } };
 
 const Navigation = ({ check, changeLight, changeDark }) => {
-  let id = localStorage.getItem("Data");
-  const input = document.querySelector("#phone");
+  // let id = localStorage.getItem("Data");
+  // const input = document.querySelector("#phone");
 
   const [open, setOpen] = React.useState(false);
   const [login, isLogin] = React.useState(false);
@@ -85,10 +76,14 @@ const Navigation = ({ check, changeLight, changeDark }) => {
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const [user, setUser] = useState(null);
-  const [value, setValue] = useState(0);
+  // const [value, setValue] = useState(0);
   const [cart, setCart] = useState(false);
-  const [phoneNo, setPhoneNo] = useState("");
+  // const [phoneNo, setPhoneNo] = useState("");
   const [navValue, setNavValue] = useState(0);
+
+
+  const location = useLocation();
+  const [currentTab, setCurrentTab] = useState(0);
 
   const handleNavChange = (event, newValue) => {
     setNavValue(newValue);
@@ -124,6 +119,31 @@ const Navigation = ({ check, changeLight, changeDark }) => {
   };
 
   const theme = useTheme();
+  const params = useParams();
+  const { partner_id } = params;
+  const { company_name } = params;
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === "/") {
+      setCurrentTab(0);
+    } else if (path === "/about") {
+      setCurrentTab(1);
+    } else if (path === "/categories") {
+      setCurrentTab(2);
+    } else if (path === "/providers") {
+      setCurrentTab(3);
+    } else if (path === "/contact") {
+      setCurrentTab(4);
+    }
+    // we have to modify this code.. idk why this doesn't work
+    else if (path === `/providers/services/${partner_id}/${company_name}`) {
+      setCurrentTab(3);
+    } else if (path === "/profile") {
+      setCurrentTab(-1)
+    } else if (path === "/") {
+      setCurrentTab(-1)
+    }
+  }, [location]);
 
   // function for Capture Code Verification
   function onCaptchVerify() {
@@ -135,7 +155,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
           callback: (response) => {
             onSignup();
           },
-          "expired-callback": () => {},
+          "expired-callback": () => { },
         },
         auth
       );
@@ -164,7 +184,29 @@ const Navigation = ({ check, changeLight, changeDark }) => {
       });
   }
 
-  const axios = require("axios").default;
+  const getToken = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Cookie", "ci_session=1rpau81dcgsnt6qjrmb2lp6220mdm0d9; csrf_cookie_name=d1132cf349f886dfa9cee4843c0ad493");
+
+    let contactNo = localStorage.getItem("ContactInfo")
+
+    var formdata = new FormData();
+    formdata.append("mobile", contactNo);
+    formdata.append("country_code", "+91");
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    fetch("https://edemand.wrteam.me/api/v1/manage_user", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result.token))
+      .then(result => localStorage.setItem("Token", result.token))
+      .catch(error => console.log('error', error));
+  }
 
   //Function for Otp Verification
   function onOTPVerify() {
@@ -180,69 +222,9 @@ const Navigation = ({ check, changeLight, changeDark }) => {
         console.log(err);
         setLoading(false);
       });
-    //   setLoading(true);
-    // window.confirmationResult
-    //   .confirm(otp)
-    //   .then(async (res) => {
-    //     // OTP verification successful
-    //     console.log(res);
-    //     setUser(res.user);
-    //     setLoading(false);
-
-    //     // Obtain the token
-    //     const options = {
-    //       method: "POST",
-    //       url: "https://{yourDomain}/oauth/token",
-    //       headers: { "content-type": "application/x-www-form-urlencoded" },
-    //       data: new URLSearchParams({
-    //         grant_type: "client_credentials",
-    //         client_id: "YOUR_CLIENT_ID",
-    //         client_secret: "YOUR_CLIENT_SECRET",
-    //         audience: "YOUR_API_IDENTIFIER",
-    //       }),
-    //     };
-
-    //     axios
-    //       .request(options)
-    //       .then(function (response) {
-    //         const token = response.data.access_token;
-    //         console.log("Access Token:", token);
-    //         // Use the token for further API requests or store it securely
-    //         // Example: sendTokenToBackend(token);
-    //       })
-    //       .catch(function (error) {
-    //         console.error(error);
-    //       });
-    //   })
-    //   .catch((err) => {
-    //     // OTP verification failed
-    //     console.log(err);
-    //     setLoading(false);
-    //   });
+    console.log("Token Verification token got from here...")
+    getToken();
   }
-
-  useEffect(() => {
-    // Get the currently authenticated user
-    const user = auth.currentUser;
-
-    // Check if the user is signed in
-    if (user) {
-      // Get the ID token
-      user
-        .getIdToken()
-        .then((idToken) => {
-          // Access the ID token
-          localStorage.setItem("Token",idToken);
-          console.log("ID Token:", idToken);
-          // You can use the ID token for further API requests or store it securely
-          // Example: sendTokenToBackend(idToken);
-        })
-        .catch((error) => {
-          // Handle any errors
-          console.error("Error getting ID token:", error);
-        });
-    }
-  }, []);
 
   const islogined = localStorage.getItem("isLoggedIn");
   const navigate = useNavigate();
@@ -250,6 +232,34 @@ const Navigation = ({ check, changeLight, changeDark }) => {
   const myLink = {
     color: theme.palette.color.navLink,
     textDecoration: "none",
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      onOTPVerify()
+    }
+  };
+
+  const { t, i18n, ready } = useTranslation();
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
+  //  const [lang, setLang] = useState('en');
+
+  // const languages = [
+  //   { value: '', text: "Options" },
+  //   { value: 'en', text: "English" },
+  //   { value: 'hi', text: "Hindi" },
+  //   { value: 'bn', text: "Bengali" }
+  // ]
+
+  // const lang = localStorage.getItem("i18nextLng")
+  const [lang, setlang] = React.useState('');
+
+  const handleChangeLanguage = (event) => {
+    setlang(event.target.value);
   };
 
   return (
@@ -294,7 +304,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                       </NavLink>
                       <br />
                       <br />
-                      <NavLink style={myLink} to="/categorys">
+                      <NavLink style={myLink} to="/categories">
                         Categories
                       </NavLink>
                       <br />
@@ -323,7 +333,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                     }}
                     to="/"
                   >
-                    eDemmand
+                    <img src={require("../../Images/edemand_logo.png")} alt="logo" height={"50px"} width={"140px"}></img>
                   </NavLink>
                 </div>
 
@@ -333,55 +343,45 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                 <Tabs
                   sx={{ marginLeft: "auto" }}
                   indicatorColor="primary"
-                  // defaultValue={value}
-                  value={navValue}
+                  value={currentTab}
                   onChange={handleNavChange}
                 >
                   <Tab
                     value={0}
                     onClick={() => navigate("/")}
-                    sx={activeTabStyle}
-                    label="Home"
+                    sx={currentTab === 0 ? activeTabStyle : {}}
+                    label={t("Home")}
                   />
                   <Tab
                     value={1}
                     onClick={() => navigate("/about")}
-                    label="About Us"
-                    sx={activeTabStyle}
+                    sx={currentTab === 1 ? activeTabStyle : {}}
+                    label={t("About Us")}
                   />
                   <Tab
                     value={2}
-                    onClick={() => navigate("/categorys")}
-                    label="Category"
-                    sx={activeTabStyle}
+                    onClick={() => navigate("/categories")}
+                    sx={currentTab === 2 ? activeTabStyle : {}}
+                    label={t("Categories")}
                   />
                   <Tab
                     value={3}
                     onClick={() => navigate("/providers")}
-                    label="Providers"
-                    sx={activeTabStyle}
+                    sx={currentTab === 3 ? activeTabStyle : {}}
+                    label={t("Providers")}
                   />
                   <Tab
                     value={4}
                     onClick={() => navigate("/contact")}
-                    label="Contact"
-                    sx={activeTabStyle}
+                    sx={currentTab === 4 ? activeTabStyle : {}}
+                    label={t("Contact")}
                   />
                 </Tabs>
               </Box>
 
               {/* #Navigation Button functionality */}
               <Box sx={{ display: "flex", marginRight: -4 }}>
-                {islogined === "" ? (
-                  <Button
-                    id="sign_in"
-                    variant="contained"
-                    startIcon={<AccountCircleIcon />}
-                    onClick={handleOpen}
-                  >
-                    Sign in
-                  </Button>
-                ) : (
+                {islogined === "true" ? (
                   <IconButton
                     id="logined_user"
                     style={{
@@ -392,9 +392,19 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                     }}
                     onClick={() => navigate("/profile")}
                   >
-                    <Avatar sx={{ height: "30px", width: "30px" }} />
+                    <Avatar sx={{ height: "30px", width: "30px", color: "white" }} src={localStorage.getItem("ProfilePicture")} />
                   </IconButton>
-                )}
+                ) : (
+                  <Button
+                    id="sign_in"
+                    variant="contained"
+                    startIcon={<AccountCircleIcon />}
+                    onClick={handleOpen}
+                  >
+                    {t("Sign in")}
+                  </Button>
+                )
+                }
 
                 <IconButton aria-label="cart" onClick={handleOpenCart}>
                   <ShoppingCartOutlinedIcon />
@@ -405,6 +415,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                     <Box sx={{ width: 400 }}>
                       <Box sx={{ textAlign: "center" }}>
                         <img
+                          alt="empty"
                           src="https://img.freepik.com/free-vector/corrugated-box-white-background_1308-111117.jpg"
                           style={{
                             width: "220px",
@@ -416,11 +427,10 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                         <br />
                         <br />
                         <br />
-                        <h3>No Products here!</h3>
+                        <h3>{t("No Products here!")}</h3>
                         <br />
-                        Your cart is empt.y. Login & Add products <br /> to that
-                        we
-                        <h4 style={{ color: "gray" }}>can serve you!</h4>
+                        {t("Your cart is empty.")} <br /><br /> {t("Login & Add products to that we")}
+                        <h4 style={{ color: "gray" }}>{t("can serve you!")}</h4>
                       </Box>
                     </Box>
                   </Drawer>
@@ -437,7 +447,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                 </IconButton>
               </Box>
 
-              <Drawer anchor="right" open={openSetting}>
+              <Drawer anchor="right" open={openSetting} onClose={handleCloseSetting}>
                 <Box width="400px">
                   <Box>
                     {/* Heading  */}
@@ -448,7 +458,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                           edge="start"
                           color="inherit"
                           aria-label="menu"
-                          // sx={{ mr: 2 }}
+                        // sx={{ mr: 2 }}
                         >
                           <SettingsOutlinedIcon />
                         </IconButton>
@@ -458,11 +468,11 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                           component="div"
                           sx={{ flexGrow: 1 }}
                         >
-                          eDemmand&nbsp;Setting
+                          {t("eDemand Setting")}
                         </Typography>
                         <IconButton
                           onClick={handleCloseSetting}
-                          sx={{ color: theme.palette.color.navLink }}
+                          sx={{ color: "white" }}
                         >
                           <CloseIcon />
                         </IconButton>
@@ -485,16 +495,43 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                           value="list"
                           aria-label="list"
                         >
-                          <Brightness7Icon /> Light Theme
+                          <Brightness7Icon /> {t("Light Theme")}
                         </ToggleButton>
                         <ToggleButton
                           onClick={changeDark}
                           value="module"
                           aria-label="module"
                         >
-                          <Brightness4Icon /> Dark Theme
+                          <Brightness4Icon /> {t("Dark Theme")}
                         </ToggleButton>
                       </ToggleButtonGroup>
+
+                    </Box> <br /><br />
+                    <Box display={"flex"} justifyContent={"center"} paddingLeft={6} paddingRight={6}>
+                      <FormControl fullWidth>
+
+                        <InputLabel >Select your language</InputLabel>
+                        <Select
+                          labelId="demo-multiple-name-label"
+                          id="demo-multiple-name"
+                          value={lang}
+                          fullWidth
+                          placeholder="Select your language"
+                          input={<OutlinedInput label="Select Languages" />}
+                          label="Select"
+                          onChange={handleChangeLanguage}
+                        >
+                          <MenuItem value={10} onClick={() => changeLanguage("en")}>English</MenuItem>
+                          <MenuItem value={20} onClick={() => changeLanguage("de")}>German</MenuItem>
+                          <MenuItem value={30} onClick={() => changeLanguage("es")}>Spanish</MenuItem>
+                        </Select>
+                      </FormControl>
+                      {/* <select value={lang} onChange={handleChange}>
+                        {languages.map(item => {
+                          return (<option key={item.value}
+                            value={item.value}>{item.text}</option>);
+                        })}
+                      </select> */}
                     </Box>
                   </Box>
                 </Box>
@@ -527,9 +564,9 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                   >
                     <Box display={"flex"}>
                       <Typography marginRight={"auto"} color={"gray"}>
-                        Login
+                        {t("Login")}
                       </Typography>
-                      {<ClearIcon onClick={handleClose} />}
+                      {<ClearIcon onClick={handleClose} sx={{ color: theme.palette.icons.icon }} />}
                     </Box>
                     <Box id="recaptcha-container"></Box>
                     {user ? (
@@ -538,7 +575,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                         {(finalNo = ph)}
                         {
                           (localStorage.setItem("ContactInfo", finalNo),
-                          localStorage.setItem("isLoggedIn", "true"))
+                            localStorage.setItem("isLoggedIn", "true"))
                         }
                       </Box>
                     ) : (
@@ -555,16 +592,16 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                               <Typography
                                 sx={{ color: theme.palette.color.navLink }}
                               >
-                                Enter Verification Code
+                                {t("Enter Verification Code")}
                               </Typography>
                               <Typography
                                 sx={{ color: theme.palette.color.navLink }}
                               >
-                                We have Sent a Verification code to <br />
-                                <Typography>Your Number</Typography>
+                                {t("We have Sent a Verification code to")} <br />
+                                <Typography>{t("Your Number")}</Typography>
                               </Typography>
                             </label>
-                            <Box marginTop={5}>
+                            <Box marginTop={5} onKeyPress={handleKeyPress}>
                               <OtpInput
                                 value={otp}
                                 onChange={setOtp}
@@ -572,27 +609,25 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                                 otpType="number"
                                 disabled={false}
                                 autoFocus
-                                className="opt-container "
+                                className="opt-container"
                               ></OtpInput>
-                            </Box>{" "}
+                            </Box>
                             <br />
                             <Button
                               onClick={onOTPVerify}
                               className="bg-emerald-600 w-full flex gap-1 items-center justify-center py-2.5 text-white rounded"
                             >
-                              {loading && (
+                              <Button
+                                variant="contained"
+                                size="medium"
+                                sx={{ width: "350px" }}
+                              >{loading && (
                                 <CgSpinner
                                   size={20}
                                   className="mt-1 animate-spin"
                                 />
                               )}
-
-                              <Button
-                                variant="contained"
-                                size="medium"
-                                sx={{ width: "350px" }}
-                              >
-                                Verify and Process
+                                {t("Verify and Process")}
                               </Button>
                             </Button>
                           </>
@@ -602,13 +637,12 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                               sx={{ color: theme.palette.color.navLink }}
                               marginBottom={2}
                             >
-                              Welcome!
+                              {t("Welcome!")}
                             </Typography>
                             <Typography
                               sx={{ color: theme.palette.color.navLink }}
                             >
-                              Enter Phone number to continue and we will a
-                              verification code to this number.{" "}
+                              {t("Enter Phone number to continue and we will a verification code to this number")}
                             </Typography>
                             <Box
                               sx={{
@@ -625,6 +659,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                                   display: "flex",
                                   alignItems: "center",
                                 }}
+                                onEnterKeyPress={onSignup}
                               />
                             </Box>
                             <br />
@@ -640,20 +675,20 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                                   className="mt-1 animate-spin"
                                 />
                               )}
-                              <span>Login to continue</span>
+                              <span>{t("Login to continue")}</span>
                             </Button>{" "}
                             <br /> <br />
                             <Typography sx={{ color: "gray" }}>
-                              By Continue you agree to out
+                              {t("By Continue you agree to out")}
                             </Typography>
                             <Typography
                               display={"flex"}
                               justifyContent={"center"}
                             >
                               <NavLink
-                                style={{ color: theme.palette.color.navLink }}
+                                style={{ color: theme.palette.color.navLink }} to={'/terms-and-conditions'} onClick={() => isLogin(false)}
                               >
-                                Terms of services
+                                {t("Terms of services")}
                               </NavLink>{" "}
                               &nbsp;
                               <p style={{ color: theme.palette.color.navLink }}>
@@ -661,9 +696,9 @@ const Navigation = ({ check, changeLight, changeDark }) => {
                               </p>{" "}
                               &nbsp;
                               <NavLink
-                                style={{ color: theme.palette.color.navLink }}
+                                style={{ color: theme.palette.color.navLink }} to={'/privacy-policies'} onClick={() => isLogin(false)}
                               >
-                                Privacy Policy
+                                {t("Privacy Policy")}
                               </NavLink>
                             </Typography>
                           </>

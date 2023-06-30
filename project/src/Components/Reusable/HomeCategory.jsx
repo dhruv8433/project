@@ -1,5 +1,4 @@
 import React from "react";
-import Categorys from "./Categorys";
 import FetchingCategorys from "./FetchingCategorys";
 import { Box, Button, Container, Typography } from "@mui/material";
 import FetchingServies, {
@@ -7,19 +6,23 @@ import FetchingServies, {
   FetchingLaundry,
   FetchingPlumbing,
 } from "./FetchingServies";
-import Providers from "./Providers";
 import { useTheme } from "@emotion/react";
 import EastIcon from "@mui/icons-material/East";
 import { useNavigate } from "react-router";
 import { HomeProvider } from "./Provider";
+import { t } from "i18next";
 // create a function and calling and setting here \
 
 const HomeCategory = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  
+  const available = localStorage.getItem("providerAvailable");
+  
   return (
     <div>
-      <Container maxWidth="100%">
+      {available ? 
+       <Container maxWidth="100%">
         <Box
           sx={{
             marginTop: 4,
@@ -101,8 +104,8 @@ const HomeCategory = () => {
           <Container>
             <Box sx={{background: theme.palette.background.box}}>
               <>
-                <Typography variant="h4">
-                  Our Valuable Service Providers
+                <Typography variant="h4" sx={{fontSize: theme.palette.fonts.h2}}>
+                  {t("Our Valuable Providers services")}
                 </Typography> <br />
                 <hr color="Whitesmoke" />
                 <br />
@@ -123,14 +126,15 @@ const HomeCategory = () => {
                     onClick={() => navigate("/providers")}
                     endIcon={<EastIcon />}
                   >
-                    View all Providers
+                    {t("View all Providers")}
                   </Button>
                 </Box>
               </Box>
             </Box>
           </Container>
         </Box>
-      </Container>
+      </Container>:
+      <></>}
     </div>
   );
 };
