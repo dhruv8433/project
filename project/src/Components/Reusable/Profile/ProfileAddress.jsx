@@ -21,6 +21,10 @@ import Address, { AddAddress } from "./Address";
 import { useTheme } from "@emotion/react";
 import Pnavigation from "./Pnavigation";
 const ProfileAddress = () => {
+
+  document.title = "profile - address | eDemand"
+
+
   const theme = useTheme();
   return (
     <div>

@@ -10,7 +10,7 @@ const ProviderBookmark = () => {
     bookmart == false ? isBookmarke(true) : isBookmarke(false)
   }
 
-  console.log("Bookmark" +bookmart)
+  // console.log("Bookmark" +bookmart)
 
   return <div >
     <Checkbox size="large" sx={{color:"white"}}

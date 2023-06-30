@@ -3,38 +3,60 @@ Default location Bhuj  */
 
 import { useState } from "react";
 
+const lat = localStorage.getItem("Lat");
+const lng = localStorage.getItem("Lng");
+
 var formdata = new FormData();
-formdata.append("latitude", "23.2507356");
-formdata.append("longitude", "69.6689201");
+formdata.append("latitude", lat);
+formdata.append("longitude", lng);
 
 var Homeformdata = new FormData();
-Homeformdata.append("latitude", "23.2507356");
-Homeformdata.append("longitude", "69.6689201");
+Homeformdata.append("latitude", lat);
+Homeformdata.append("longitude", lng);
 Homeformdata.append("limit", "6");
 
 /* Home Service  */
 var HomeCleaning = new FormData();
-HomeCleaning.append("latitude", "23.2507356");
-HomeCleaning.append("longitude", "69.6689201");
+HomeCleaning.append("latitude", lat);
+HomeCleaning.append("longitude", lng);
 HomeCleaning.append("category_id", "213");
 
 /*Laundry Service */
 var LaundryService = new FormData();
-LaundryService.append("latitude", "23.2507356");
-LaundryService.append("longitude", "69.6689201");
+LaundryService.append("latitude", lat);
+LaundryService.append("longitude", lng);
 LaundryService.append("category_id", "222");
 
 /*Car Service */
 var CarService = new FormData();
-CarService.append("latitude", "23.2507356");
-CarService.append("longitude", "69.6689201");
+CarService.append("latitude", lat);
+CarService.append("longitude", lng);
 CarService.append("category_id", "259");
 
 /*Plumbing Service */
 var PlumbingService = new FormData();
-PlumbingService.append("latitude", "23.2507356");
-PlumbingService.append("longitude", "69.6689201");
+PlumbingService.append("latitude", lat);
+PlumbingService.append("longitude", lng);
 PlumbingService.append("category_id", "240");
+
+
+// Function to get all home screen data 
+/* function for fetching Category  */
+export const get_home_screen = async () => {
+  var requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow",
+  };
+
+  const response = await fetch(
+    "https://edemand-test.thewrteam.in/api/v1/get_home_screen_data",
+    requestOptions
+  );
+  const result = await response.json();
+  return result;
+};
+
 
 /* function for fetching Category  */
 export const get_Api_Category = async () => {
@@ -182,6 +204,7 @@ export default {
   get_services,
   get_home_providers,
   get_settings,
+  get_home_screen
 };
 
 /** This code is for fetchig datas from api

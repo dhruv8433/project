@@ -15,6 +15,8 @@ import { useTheme } from "@emotion/react";
 import Pnavigation from "./Pnavigation";
 
 const ProfileNotification = () => {
+  document.title = "profile - notifications | eDemand"
+
   const theme = useTheme()
   return (
     <div>

@@ -21,33 +21,23 @@ import {
   Skeleton,
 } from "@mui/material";
 import {
-  Dashboard,
-  Payment,
   Book,
-  Person,
   KeyboardArrowRight,
-  Delete,
   Logout,
-  Notifications,
   FavoriteBorder,
-  Wallet,
-  AccountBalance,
   AccountBalanceWalletOutlined,
   DeleteOutline,
   NotificationsOutlined,
-  LocalActivityOutlined,
   LocationCityOutlined,
 } from "@mui/icons-material";
-import CircularProgress from "@mui/material/CircularProgress";
 import ClearIcon from "@mui/icons-material/Clear";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
-import { BrowserRouter, Link, Route, Router, Routes } from "react-router-dom";
-import ProfilePayment from "./ProfilePayment";
-import RightContent from "./RightContent";
+import { Link } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { t } from "i18next";
 
 const ProfileNavigation = () => {
   const [open, setOpen] = React.useState(false);
@@ -57,6 +47,9 @@ const ProfileNavigation = () => {
   const [defnum, setDefNum] = useState("+91987654321");
   const [selectedOption, setSelectedOption] = useState("");
   const [loggedOut, setLoggedOut] = useState(false);
+  // for profile picture
+  const [selectedImage, setSelectedImage] = useState(null);
+  document.title = "profile | eDemand"
 
   const handleLogout = () => {
     setIsVisible(true);
@@ -92,9 +85,9 @@ const ProfileNavigation = () => {
     let email = document.getElementById("editEmail").value;
     let phone = document.getElementById("editPhone").value;
 
-    console.log(Myname);
-    console.log(email);
-    console.log(phone);
+    // console.log(Myname);
+    // console.log(email);
+    // console.log(phone);
 
     setDefName(Myname);
     setDefEml(email);
@@ -103,8 +96,10 @@ const ProfileNavigation = () => {
     localStorage.setItem("currentuser", Myname);
     localStorage.setItem("currentemail", email);
     localStorage.setItem("currentphone", phone);
+    localStorage.setItem("ProfilePicture", selectedImage)
 
     toast.success("Update Successfully...");
+    setOpen(false);
   };
 
   let name = localStorage.getItem("currentuser");
@@ -115,9 +110,11 @@ const ProfileNavigation = () => {
 
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
+  
+
   return (
-    <Grid container spacing={1} columns={16}>
-      <Grid display={"flex"} maxWidth={"40%"} xs={5}>
+    <Grid container spacing={3} sx={{ padding: 0 }}>
+      <Grid display={"flex"} item xs={12} md={4}>
         <Box width={"90%"}>
           <Box
             sx={{
@@ -140,6 +137,7 @@ const ProfileNavigation = () => {
                     width: "60px",
                     border: "5px solid white",
                   }}
+                  src={localStorage.getItem("ProfilePicture")}
                 ></Avatar>
               </ListItemDecorator>
               {isLoggedIn === "" ? (
@@ -163,7 +161,7 @@ const ProfileNavigation = () => {
                   mt: -12,
                 }}
               >
-                Edit
+                {t("Edit")}
               </Button>
               <Backdrop
                 sx={{
@@ -185,11 +183,11 @@ const ProfileNavigation = () => {
                     marginRight={3}
                     marginTop={3}
                     marginBottom={3}
-                    sx={{background: theme.palette.background.box}}
+                    sx={{ background: theme.palette.background.box }}
                   >
                     <Box display={"flex"}>
-                      <Typography marginRight={"auto"} sx={{color: theme.palette.color.navLink}}>Edit Profile</Typography>
-                      {<ClearIcon onClick={handleClose} sx={{color: theme.palette.color.navLink}} />}
+                      <Typography marginRight={"auto"} sx={{ color: theme.palette.color.navLink }}>Edit Profile</Typography>
+                      {<ClearIcon onClick={handleClose} sx={{ color: theme.palette.color.navLink }} />}
                     </Box>
                     {/* img */}
 
@@ -203,7 +201,9 @@ const ProfileNavigation = () => {
                         marginTop: "30px",
                         marginBottom: "30px",
                         marginInlineStart: "122px",
+                        color: "white"
                       }}
+                      src={localStorage.getItem("ProfilePicture")} 
                     ></Avatar>
                     <Badge>
                       <EditRoundedIcon
@@ -215,12 +215,27 @@ const ProfileNavigation = () => {
                           mt: -9,
                           border: "3px solid white",
                           cursor: "pointer",
+
+                        }}
+                        onClick={() => {
+                          const input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = 'image/*';
+                          input.onchange = (event) => {
+                            const file = event.target.files[0];
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                              setSelectedImage(e.target.result);
+                            };
+                            reader.readAsDataURL(file);
+                          };
+                          input.click();
                         }}
                       />
                     </Badge>
 
                     <Box display={"block"}>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t("Name")}</FormLabel>
                       <br />
                       <form>
                         <TextField
@@ -235,7 +250,7 @@ const ProfileNavigation = () => {
                         />
                         <br />
                         <br />
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>{t("Email")}</FormLabel>
                         <br />
                         <TextField
                           id="editEmail"
@@ -250,7 +265,7 @@ const ProfileNavigation = () => {
                         />
                         <br />
                         <br />
-                        <FormLabel>Phone</FormLabel>
+                        <FormLabel>{t("Phone")}</FormLabel>
                         <br />{" "}
                         <TextField
                           id="editPhone"
@@ -272,7 +287,7 @@ const ProfileNavigation = () => {
                           sx={{ width: "350px" }}
                           onClick={submite}
                         >
-                          Save Profile
+                          {t("Save Profile")}
                         </Button>
                       </form>
                       <ToastContainer
@@ -302,7 +317,7 @@ const ProfileNavigation = () => {
                   href="/"
                 >
                   <ListItemIcon>
-                    <Book sx={{ color: "blue" }} />
+                    <Book sx={{ color: theme.palette.color.logo }} />
                   </ListItemIcon>
                   {/* booking address url  */}
                   <Link
@@ -313,7 +328,7 @@ const ProfileNavigation = () => {
                     }}
                     primary="My Bookings"
                   >
-                    Mybooking
+                    {t("Bookings")}
                   </Link>
                   <IconButton
                     sx={{
@@ -335,7 +350,7 @@ const ProfileNavigation = () => {
                   href="/"
                 >
                   <ListItemIcon>
-                    <LocationCityOutlined sx={{ color: "blue" }} />
+                    <LocationCityOutlined sx={{ color: theme.palette.color.logo }} />
                   </ListItemIcon>
                   <Link
                     to={"/profile/address"}
@@ -345,7 +360,7 @@ const ProfileNavigation = () => {
                     }}
                     primary="My Bookings"
                   >
-                    Manage Address
+                    {t("Manage Addresses")}
                   </Link>
                   <IconButton
                     sx={{
@@ -367,7 +382,7 @@ const ProfileNavigation = () => {
                   href="/"
                 >
                   <ListItemIcon>
-                    <AccountBalanceWalletOutlined sx={{ color: "blue" }} />
+                    <AccountBalanceWalletOutlined sx={{ color: theme.palette.color.logo }} />
                   </ListItemIcon>
                   <Link
                     to={"/profile/payment"}
@@ -377,7 +392,7 @@ const ProfileNavigation = () => {
                     }}
                     primary="My Bookings"
                   >
-                    Payment
+                    {t("Payment History")}
                   </Link>
                   <IconButton
                     sx={{
@@ -399,7 +414,7 @@ const ProfileNavigation = () => {
                   href="/"
                 >
                   <ListItemIcon>
-                    <FavoriteBorder sx={{ color: "blue" }} />
+                    <FavoriteBorder sx={{ color: theme.palette.color.logo }} />
                   </ListItemIcon>
                   <Link
                     to={"/profile/bookmark"}
@@ -409,7 +424,7 @@ const ProfileNavigation = () => {
                     }}
                     primary="My Bookings"
                   >
-                    My Bookmark
+                    {t("Bookmarks")}
                   </Link>
                   <IconButton
                     sx={{
@@ -434,7 +449,7 @@ const ProfileNavigation = () => {
                   href="/"
                 >
                   <ListItemIcon>
-                    <NotificationsOutlined sx={{ color: "blue" }} />
+                    <NotificationsOutlined sx={{ color: theme.palette.color.logo }} />
                   </ListItemIcon>
                   <Link
                     to={"/profile/notifications"}
@@ -444,7 +459,7 @@ const ProfileNavigation = () => {
                     }}
                     primary="My Bookings"
                   >
-                    Notification
+                    {t("Notifications")}
                   </Link>
                   <IconButton
                     sx={{
@@ -470,7 +485,7 @@ const ProfileNavigation = () => {
                   href="/"
                 >
                   <ListItemIcon>
-                    <Logout sx={{ color: "blue" }} />
+                    <Logout sx={{ color: theme.palette.color.logo }} />
                   </ListItemIcon>
 
                   <Link
@@ -482,7 +497,7 @@ const ProfileNavigation = () => {
                     primary="My Bookings"
                     onClick={() => setIsVisible(true)}
                   >
-                    Logout
+                    {t("Logout")}
                   </Link>
 
                   <IconButton
@@ -515,7 +530,7 @@ const ProfileNavigation = () => {
                     }}
                     primary="My Bookings"
                   >
-                    Delete Account
+                    {t("Delete Account")}
                   </Link>
                   <IconButton
                     sx={{
@@ -533,12 +548,12 @@ const ProfileNavigation = () => {
           </Box>
         </Box>
       </Grid>
-      <Grid xs={7} sx={{ marginTop: 5, marginBottom: 3 }}>
-        {url === '/profile' ? ( <Box>
-          <img src={require("../../../Images/profile.jpg")} style={{borderRadius: 10}} height="580px" width={"auto"} />
+      <Grid xs={12} md={4} sx={{ marginTop: 8, marginBottom: 3, padding: 0 }}>
+        {url === '/profile' ? (<Box>
+          <img src={require("../../../Images/profile.jpg")} style={{ borderRadius: 10 }} width={"auto"} height="580px" alt="Empty state" />
         </Box>) : (<>
         </>)}
-       
+
       </Grid>
     </Grid>
   );

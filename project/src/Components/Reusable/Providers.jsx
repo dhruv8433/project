@@ -7,7 +7,7 @@ import { Box, Button, Container, Grid } from "@mui/material";
 import { useNavigate } from "react-router";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.background.card,
+  backgroundColor: theme.palette.background.provider,
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
@@ -22,7 +22,6 @@ const Providers = () => {
         <Grid
           container
           sx={{
-            backgroundColor: "white",
             borderRadius: "10px",
             display: "flex",
           }}

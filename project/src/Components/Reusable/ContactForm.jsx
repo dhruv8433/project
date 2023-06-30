@@ -29,6 +29,7 @@ import React from "react";
 import Input from "@mui/joy/Input";
 import { useNavigate } from "react-router";
 import { useTheme } from "@emotion/react";
+import { t } from "i18next";
 
 
 const ContactForm = () => {
@@ -36,20 +37,23 @@ const ContactForm = () => {
   const navigate = useNavigate()
   return (
     <>
+      <Box bgcolor={theme.palette.background.heading} paddingTop={"15px"} paddingBottom={"15px"} mb={"20px"}>
+        <Container maxWidth="lg">
+          <Breadcrumbs
+            aria-label="breadcrumb"
+            sx={{ marginBottom: 1, marginTop: 1 }}
+          >
+            <Link sx={{ cursor: "pointer", textDecoration: "none" }} color="inherit" onClick={() => navigate("/")}>
+              {t("Home")}
+            </Link>
+            <Typography color="text.primary">{t("Contact")}</Typography>
+          </Breadcrumbs>
+          <Typography variant="h4" gutterBottom>
+            <>{t("Contact Us")}</>
+          </Typography>
+        </Container>
+      </Box>
       <Container>
-        <Breadcrumbs
-          aria-label="breadcrumb"
-          sx={{ marginBottom: 1, marginTop: 1 }}
-        >
-           <Link sx={{cursor: "pointer", textDecoration: "none"}} color="inherit" onClick={()=>navigate("/")}>
-          Home
-        </Link>
-          <Typography color="text.primary">Contact</Typography>
-        </Breadcrumbs>
-        <Typography variant="h4" gutterBottom>
-          <>Contact Us</>
-        </Typography>
-
         <Grid
           container
           spacing={3}
@@ -61,10 +65,10 @@ const ContactForm = () => {
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <Box sx={{ padding: { xs: "16px", md: "20px" } }}>
               <Typography variant="h6" color={"blue"} fontSize={16}>
-                Let's Talk
+                {t("Let's Talk")}
               </Typography>
               <Typography variant="h5" gutterBottom>
-                <strong>Get In Touch With Us!</strong>
+                <strong>{t("Get In Touch With Us!")}</strong>
               </Typography>
 
               {/* Contact Menu */}
@@ -75,18 +79,18 @@ const ContactForm = () => {
                     width: "30px",
                     border: "2px solid",
                     p: 1,
-                    backgroundColor: "blue",
+                    backgroundColor: "#9e9eff",
                     color: "white",
                     borderRadius: "5px",
                   }}
                 />
                 <Box ml={2}>
                   <Typography variant="p" color={"blue"}>
-                    Let's Talk
+                    {t("Let's Talk")}
                   </Typography>
                   <Typography
                     variant="h6"
-                    fontSize={18}
+                    fontSize={16}
                     fontWeight={400}
 
                   >
@@ -103,18 +107,18 @@ const ContactForm = () => {
                     width: "30px",
                     border: "2px solid",
                     p: 1,
-                    backgroundColor: "blue",
+                    backgroundColor: "#9e9eff",
                     color: "white",
                     borderRadius: "5px",
                   }}
                 />
                 <Box ml={2}>
                   <Typography variant="p" color={"blue"}>
-                    Quick Email
+                    {t("Quick Email")}
                   </Typography>
                   <Typography
                     variant="h6"
-                    fontSize={18}
+                    fontSize={16}
                     fontWeight={400}
 
                   >
@@ -131,18 +135,18 @@ const ContactForm = () => {
                     width: "30px",
                     border: "2px solid",
                     p: 1,
-                    backgroundColor: "blue",
+                    backgroundColor: "#9e9eff",
                     color: "white",
                     borderRadius: "5px",
                   }}
                 />
                 <Box ml={2}>
                   <Typography variant="p" color={"blue"}>
-                    Office Address
+                    {t("Office Address")}
                   </Typography>
                   <Typography
                     variant="h6"
-                    fontSize={18}
+                    fontSize={16}
                     fontWeight={400}
 
                   >
@@ -160,18 +164,18 @@ const ContactForm = () => {
                     width: "30px",
                     border: "2px solid",
                     p: 1,
-                    backgroundColor: "blue",
+                    backgroundColor: "#9e9eff",
                     color: "white",
                     borderRadius: "5px",
                   }}
                 />
                 <Box ml={2}>
                   <Typography variant="p" color={"blue"}>
-                    Opening Houres
+                    {t("Opening Hours")}
                   </Typography>
                   <Typography
                     variant="h6"
-                    fontSize={18}
+                    fontSize={16}
                     fontWeight={400}
                   >
                     9:00 AM to 7:00 PM
@@ -208,7 +212,7 @@ const ContactForm = () => {
                 marginTop={10}
               >
                 <Typography variant="h3" display={{ xs: "block", md: "none" }}>
-                  Contact us
+                  {t("Contact us")}
                 </Typography>
                 <Box display={{ xs: "none", md: "flex" }}>
                   <Typography
@@ -216,7 +220,7 @@ const ContactForm = () => {
                     variant="h6"
                     fontSize={16}
                   >
-                    Name
+                    {t("Name")}
                   </Typography>
                   <Typography
                     textAlign={"center"}
@@ -224,7 +228,7 @@ const ContactForm = () => {
                     variant="h6"
                     fontSize={16}
                   >
-                    Email
+                    {t("Email")}
                   </Typography>
                 </Box>
 
@@ -261,7 +265,7 @@ const ContactForm = () => {
                   display={{ xs: "none", md: "block" }}
                   fontSize={16}
                 >
-                  Subject
+                  {t("Subject")}
                 </Typography>
                 <TextField
                   fullWidth
@@ -269,7 +273,7 @@ const ContactForm = () => {
                   id="email"
                   placeholder="Enter Subject"
                   variant="outlined"
-                  sx={{ marginBottom: 6, backgroundColor: theme.palette.background.paper,}}
+                  sx={{ marginBottom: 6, backgroundColor: theme.palette.background.paper, }}
                 />
 
                 <Typography
@@ -278,7 +282,7 @@ const ContactForm = () => {
                   display={{ xs: "none", md: "block" }}
                   fontSize={16}
                 >
-                  Message
+                  {t("Message")}
                 </Typography>
                 <TextField
                   fullWidth
@@ -301,7 +305,7 @@ const ContactForm = () => {
                     backgroundColor: "#343f53",
                   }}
                 >
-                  Send Message
+                  {t("Send Message")}
                 </Button>
               </Box>
             </Box>
@@ -311,15 +315,15 @@ const ContactForm = () => {
               sx={{
                 display: { xs: "block", md: "none" },
                 marginBottom: 6,
-                height:"650px",
+                height: "650px",
                 border: "1px solid",
                 borderRadius: "10px",
                 padding: "8PX",
-                marginRight:3
+                marginRight: 3
               }}
             >
               <Typography textAlign={"center"} variant="h5">
-               <strong> Contact Form </strong>
+                <strong> Contact Form </strong>
               </Typography>
               {/* <FormLabel>
                 <Label>Contact Form</Label>
@@ -390,17 +394,17 @@ const ContactForm = () => {
         </Grid>
 
         {/* Map of location Time Square  */}
-      <Box marginTop={3} marginBottom={3} sx={{marginLeft: -3}}>
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3666.2857315616134!2d69.63917367160323!3d23.232687241309453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39511e6ca04d886d%3A0xd8714f0b27255ba9!2sTime%20Square%20Properties%20Pvt%20Ltd!5e0!3m2!1sen!2sin!4v1682322988724!5m2!1sen!2sin"
-          width="100%"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
-      </Box>
+        <Box marginTop={3} marginBottom={3} sx={{ marginLeft: -3 }}>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3666.2857315616134!2d69.63917367160323!3d23.232687241309453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39511e6ca04d886d%3A0xd8714f0b27255ba9!2sTime%20Square%20Properties%20Pvt%20Ltd!5e0!3m2!1sen!2sin!4v1682322988724!5m2!1sen!2sin"
+            width="100%"
+            height="450"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </Box>
       </Container>
     </>
   );

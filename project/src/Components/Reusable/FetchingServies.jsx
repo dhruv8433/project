@@ -13,6 +13,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+import '../../CSS/style.css';
 import { useEffect, useState } from "react";
 import api from "../../API/Fetch_data_Api";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
@@ -23,7 +24,7 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { FavoriteBorder } from "@mui/icons-material";
 
@@ -71,9 +72,9 @@ const FetchingServies = () => {
                   return (
                     <>
                       <Typography
-                        fontSize={theme.palette.fonts.h1}
+                        fontSize={theme.palette.fonts.h2}
                         marginBottom={1}
-                        // fontWeight={400}
+                      // fontWeight={400}
                       >
                         {response.name}
                       </Typography>
@@ -94,7 +95,7 @@ const FetchingServies = () => {
             <span className="previous-next-btn" sx={{ marginLeft: "auto" }}>
               <IconButton aria-label="delete" onClick={prevSlide}>
                 <ArrowBackIosIcon
-                  sx={{ color: theme.palette.color.navLink, pl: 0.6 }}
+                  sx={{ color: theme.palette.color.navLink }}
                 />
               </IconButton>
               <IconButton aria-label="delete" onClick={nextSlide}>
@@ -110,6 +111,7 @@ const FetchingServies = () => {
       {/* ------------------------------------------------------------------------ */}
 
       <Box sx={{ marginTop: 2, marginBottom: 2 }}>
+       {/* Empty state  */}
         <Swiper
           className="swiper-wrapper-padding"
           slidesPerView={5}
@@ -120,7 +122,7 @@ const FetchingServies = () => {
           }}
           modules={[Navigation]}
           onSwiper={(s) => {
-            console.log("initialize swiper", s);
+            // console.log("initialize swiper", s);
             setSwiper(s);
           }}
           breakpoints={{
@@ -140,55 +142,58 @@ const FetchingServies = () => {
               spaceBetween: 30,
             },
           }}
-        >
+        > 
           {isLoading ? (
             <Box>
               {image.map((response) => {
                 return (
-                  <SwiperSlide
-                    style={{ display: "flex", justifyContent: "space-around" }}
-                  >
-                    <Card
-                      className="service-card"
-                      key={response.id}
-                      sx={{ width: 260, height: 220, borderRadius: "10px" }}
-                      onClick={() => navigate("/providers/services/293")}
+                  <div key={response.id}>
+                    <SwiperSlide
+                      style={{ display: "flex", justifyContent: "space-around" }}
                     >
-                      <img
-                        src={response.category_image}
-                        title={response.name}
-                        style={{
-                          height: "100%",
-                          width: "100%",
-                          filter: "brightness(0.8)",
-                          justifyContent: "center",
-                          objectFit: "cover",
-                          display: "flex",
-                        }}
+                      <Card
+                        className="service-card"
+                        key={response.id}
+                        sx={{ width: 260, height: 220, borderRadius: "10px" }}
+                        onClick={() => navigate("/providers/services/293/world-clean-pvt-ltd")}
+                      >
+                        <img
+                          src={response.category_image}
+                          title={response.name}
+                          alt="service_image"
+                          style={{
+                            height: "100%",
+                            width: "100%",
+                            filter: "brightness(0.8)",
+                            justifyContent: "center",
+                            objectFit: "cover",
+                            display: "flex",
+                          }}
                         // we have to implemenmt provider/service/...
-                      />
-                      <Box marginTop={-5} textAlign={"center"}>
-                        <Typography
-                          variant="h6"
-                          zIndex={1}
-                          position={"relative"}
-                        >
-                          <NavLink
-                            to={"/providers/services"}
-                            style={{
-                              color: "white",
-                              textDecoration: "none",
-                              fontWeight: 600,
-                            }}
+                        />
+                        <Box marginTop={-5} textAlign={"center"}>
+                          <Typography
+                            variant="h6"
+                            zIndex={1}
+                            position={"relative"}
                           >
-                            {response.name}
-                          </NavLink>
-                        </Typography>
-                      </Box>
-                      <div className="overlay"></div>
-                      {/* <div className="service-card-rating">4.5</div> */}
-                    </Card>
-                  </SwiperSlide>
+                            <NavLink
+                              to={"/providers/services"}
+                              style={{
+                                color: "white",
+                                textDecoration: "none",
+                                fontWeight: 600,
+                              }}
+                            >
+                              {response.name}
+                            </NavLink>
+                          </Typography>
+                        </Box>
+                        <div className="overlay"></div>
+                        {/* <div className="service-card-rating">4.5</div> */}
+                      </Card>
+                    </SwiperSlide>
+                  </div>
                 );
               })}
             </Box>
@@ -254,7 +259,7 @@ export const FetchingPlumbing = () => {
                   return (
                     <>
                       <Typography
-                        fontSize={theme.palette.fonts.h1}
+                        fontSize={theme.palette.fonts.h2}
                         marginBottom={1}
                       >
                         {response.name}
@@ -276,7 +281,7 @@ export const FetchingPlumbing = () => {
             <span className="previous-next-btn" sx={{ marginLeft: "auto" }}>
               <IconButton aria-label="delete" onClick={prevSlide}>
                 <ArrowBackIosIcon
-                  sx={{ color: theme.palette.color.navLink, pl: 0.6 }}
+                  sx={{ color: theme.palette.color.navLink }}
                 />
               </IconButton>
               <IconButton aria-label="delete" onClick={nextSlide}>
@@ -295,7 +300,7 @@ export const FetchingPlumbing = () => {
           slidesPerView={5}
           freeMode={true}
           onSwiper={(s) => {
-            console.log("initialize swiper", s);
+            // console.log("initialize swiper", s);
             setSwiper(s);
           }}
           style={{
@@ -311,7 +316,7 @@ export const FetchingPlumbing = () => {
               spaceBetween: 20,
             },
             768: {
-              slidesPerView: 30,
+              slidesPerView: 3,
               spaceBetween: 30,
             },
             1024: {
@@ -329,13 +334,14 @@ export const FetchingPlumbing = () => {
                   >
                     <Card
                       className="service-card"
-                      onClick={() => navigate("/providers/services/303")}
+                      onClick={() => navigate("/providers/services/303/dlyingdata-multi-services")}
                       key={response.id}
                       sx={{ width: 260, height: 220, borderRadius: "10px" }}
                     >
                       <img
                         src={response.category_image}
                         title={response.name}
+                        alt="service_image"
                         style={{
                           height: "100%",
                           width: "100%",
@@ -432,7 +438,7 @@ export const FetchingLaundry = () => {
                   return (
                     <>
                       <Typography
-                        fontSize={theme.palette.fonts.h1}
+                        fontSize={theme.palette.fonts.h2}
                         marginBottom={1}
                       >
                         {response.name}
@@ -454,7 +460,7 @@ export const FetchingLaundry = () => {
             <span className="previous-next-btn" sx={{ marginLeft: "auto" }}>
               <IconButton aria-label="delete" onClick={prevSlide}>
                 <ArrowBackIosIcon
-                  sx={{ color: theme.palette.color.navLink, pl: 0.6 }}
+                  sx={{ color: theme.palette.color.navLink }}
                 />
               </IconButton>
               <IconButton aria-label="delete" onClick={nextSlide}>
@@ -474,7 +480,7 @@ export const FetchingLaundry = () => {
           freeMode={true}
           // navigation={true}
           onSwiper={(s) => {
-            console.log("initialize swiper", s);
+            // console.log("initialize swiper", s);
             setSwiper(s);
           }}
           style={{
@@ -510,10 +516,11 @@ export const FetchingLaundry = () => {
                       className="service-card"
                       key={response.id}
                       sx={{ width: 260, height: 220, borderRadius: "10px" }}
-                      onClick={() => navigate("/providers/services/263")}
+                      onClick={() => navigate("providers/services/298/plumbhelp-pvt-ltd")}
                     >
                       <img
                         src={response.category_image}
+                        alt="service_image"
                         title={response.name}
                         style={{
                           height: "100%",
@@ -608,7 +615,7 @@ export const FetchingCar = () => {
                   return (
                     <>
                       <Typography
-                        fontSize={theme.palette.fonts.h1}
+                        fontSize={theme.palette.fonts.h2}
                         marginBottom={1}
                       >
                         {response.name}
@@ -630,7 +637,7 @@ export const FetchingCar = () => {
             <span className="previous-next-btn" sx={{ marginLeft: "auto" }}>
               <IconButton aria-label="delete" onClick={prevSlide}>
                 <ArrowBackIosIcon
-                  sx={{ color: theme.palette.color.navLink, pl: 0.6 }}
+                  sx={{ color: theme.palette.color.navLink }}
                 />
               </IconButton>
               <IconButton aria-label="delete" onClick={nextSlide}>
@@ -649,7 +656,7 @@ export const FetchingCar = () => {
           slidesPerView={4}
           freeMode={true}
           onSwiper={(s) => {
-            console.log("initialize swiper", s);
+            // console.log("initialize swiper", s);
             setSwiper(s);
           }}
           style={{
@@ -683,13 +690,14 @@ export const FetchingCar = () => {
                   >
                     <Card
                       className="service-card"
-                      onClick={() => navigate("/providers/services/270")}
+                      onClick={() => navigate("/providers/services/270/piston-car-service")}
                       key={response.id}
-                      sx={{ width: 260, height: 220, borderRadius: "10px" }}
+                      sx={{ width: 260, height: 220, borderRadius: "10px", cursor: "pointer" }}
                     >
                       <img
                         src={response.category_image}
                         title={response.name}
+                        alt="service_image"
                         style={{
                           height: "100%",
                           width: "100%",

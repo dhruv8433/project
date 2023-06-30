@@ -30,6 +30,9 @@ import { useTheme } from "@emotion/react";
 import Pnavigation from "./Pnavigation";
 
 const ProfileBooking = () => {
+
+  document.title = "profile - booking | eDemand"
+
   const theme = useTheme();
 
   const cartData = JSON.parse(localStorage.getItem("cart")) || [];
@@ -95,13 +98,7 @@ const ProfileBooking = () => {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        {/* <Typography gutterBottom variant="h6" component="div">
-                          $
-                        </Typography> */}
                       </Grid>
-                      {/* <Typography color="text.secondary" variant="body2">
-                          {response.description}
-                        </Typography> */}
                     </Grid>
                   </Box>
                   <br />
@@ -138,7 +135,7 @@ const ProfileBooking = () => {
                   </Box>
                   <Divider />
 
-                  <Box sx={{ background: "#f9f8f8" }}>
+                  <Box sx={{ background: theme.palette.background.booking }}>
                     <Box sx={{ ml: 3, pt: 2, pb: 3, mr: 3 }}>
                       <Grid container alignItems="center" sx={{ ml: 1 }}>
                         <Grid item xs>

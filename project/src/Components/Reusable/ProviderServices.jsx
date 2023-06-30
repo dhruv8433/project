@@ -30,6 +30,7 @@ import { useTheme } from "@emotion/react";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { Transert } from "../../actions/action";
+import { t } from "i18next";
 
 const ProviderServices = ({ match }) => {
   const navigate = useNavigate();
@@ -47,19 +48,40 @@ const ProviderServices = ({ match }) => {
 
   const handleOpen = (item) => {
     // if user is logged in then success otherwiser error 'please login'
-    islogined === ""
-      ? toast.error("Please Login...")
-      : toast.success("Added Success...");
+    // islogined === ""
+    //   ? toast.error("Please Login...")
+    //   : toast.success("Added Success...");
     console.info("clicked", item);
+
+    if (islogined == "") {
+      toast.error("Please Login...")
+    }
+    const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+    const itemQuantities = JSON.parse(localStorage.getItem("itemQuantities")) || {};
+
+    if (islogined) {
+      if (item.id in itemQuantities) {
+        toast.info("Item already in cart");
+        return;
+      } else
+        toast.success("Added to cart!")
+    }
 
     dispatch(Transert(item));
 
-    const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+    // backup 
+    // const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+    // cartData.push(item);
+    // localStorage.setItem("cart", JSON.stringify(cartData));
+
+    // const itemQuantities =
+    //   JSON.parse(localStorage.getItem("itemQuantities")) || {};
     cartData.push(item);
     localStorage.setItem("cart", JSON.stringify(cartData));
 
-    const itemQuantities =
-      JSON.parse(localStorage.getItem("itemQuantities")) || {};
+    // Increment the item quantity by 1
+    itemQuantities[item.id] = 1;
+    localStorage.setItem("itemQuantities", JSON.stringify(itemQuantities));
 
     // Check if the item already exists in itemQuantities
     if (item.id in itemQuantities) {
@@ -76,7 +98,8 @@ const ProviderServices = ({ match }) => {
   //dynamic urlN
   const params = useParams();
   const { partner_id } = params;
-  console.log("partner_id" + partner_id);
+  const { company_name } = params;
+  // console.log("partner_id" + partner_id);
 
   let finalDoc = 0;
 
@@ -85,6 +108,7 @@ const ProviderServices = ({ match }) => {
     formdata.append("latitude", "23.2507356");
     formdata.append("longitude", "69.6689201");
     formdata.append("partner_id", `${partner_id}`);
+    formdata.append("company_name", `${company_name}`);
 
     var requestOptions = {
       method: "POST",
@@ -97,51 +121,71 @@ const ProviderServices = ({ match }) => {
       requestOptions
     );
     const result = await response.json();
-    console.log(result);
+    // console.log(result);
     setParentPicture(partner_id);
-    console.log("Stored ID :" + parentPicture);
+    // console.log("Stored ID :" + parentPicture);
     return result;
   }
 
   useEffect(() => {
+
+    document.title = `${company_name} | edemand`
+
     allData()
       .then((response) => setData(response.data))
       .then((response) => setIsLoading(true))
-      .then((response) => console.log(response));
+      // .then((response) => console.log(response));
     api
       .get_providers()
       .then((response) => setProvider(response.data))
       .then((response) => setIsLoading(true))
-      .then((response) => console.log(response));
+      // .then((response) => console.log(response));
   }, []);
 
   return (
     <div>
+      <Box bgcolor={theme.palette.background.heading} paddingTop={"15px"} paddingBottom={"15px"} mb={"20px"}>
+        <Container maxWidth="lg">
+          <Breadcrumbs
+            aria-label="breadcrumb"
+            sx={{ marginBottom: 1, marginTop: 1 }}
+          >
+            <Link
+              sx={{ cursor: "pointer", textDecoration: "none" }}
+              color="inherit"
+              onClick={() => navigate("/")}
+            >
+              {t("Home")}
+            </Link>
+            <Link
+              sx={{ cursor: "pointer", textDecoration: "none" }}
+              color="inherit"
+              onClick={() => navigate("/providers")}
+            >
+              {t("Providers")}
+            </Link>
+            <Typography color="text.primary">{t("Services")}</Typography>
+          </Breadcrumbs>
+          {isLoading ? (
+            <>
+              {
+                provider.map((response) => {
+                  if (response.partner_id == partner_id)
+                    return (
+                      <> <Typography variant="h4" gutterBottom>
+                        <strong>{response.company_name}</strong>
+                      </Typography>
+                      </>
+                    )
+                })
+              }
+            </>
+          ) : (
+            <Skeleton sx={{ width: "200px", height: "50px" }} />
+          )}
+        </Container>
+      </Box>
       <Container>
-        <Breadcrumbs
-          aria-label="breadcrumb"
-          sx={{ marginBottom: 1, marginTop: 1 }}
-        >
-          <Link
-            sx={{ cursor: "pointer", textDecoration: "none" }}
-            color="inherit"
-            onClick={() => navigate("/")}
-          >
-            Home
-          </Link>
-          <Link
-            sx={{ cursor: "pointer", textDecoration: "none" }}
-            color="inherit"
-            onClick={() => navigate("/providers")}
-          >
-            Providers
-          </Link>
-          <Typography color="text.primary">Services</Typography>
-        </Breadcrumbs>
-        <Typography variant="h4" gutterBottom>
-          <strong>Service Providers</strong>
-        </Typography>
-
         <Grid container spacing={2}>
           <Grid item xs={12} md={7}>
             <Box
@@ -152,7 +196,7 @@ const ProviderServices = ({ match }) => {
               }}
             >
               <Typography variant="h5" ml={2} p={2}>
-                <strong>Our Services</strong>
+                <strong>{t("Our Services")}</strong>
               </Typography>
               <hr />
 
@@ -173,8 +217,9 @@ const ProviderServices = ({ match }) => {
                                   p: 1,
                                 }}
                               >
-                                <Grid container display={"flex"} spacing={3}>
-                                  <Grid item md={4}>
+                                {/* PC SCREEN ONLY  */}
+                                <Grid container display={{ xs: "none", sm: "flex" }} spacing={3}>
+                                  <Grid item md={4} >
                                     <CardMedia
                                       image={response.image_of_the_service}
                                       alt="hi"
@@ -193,7 +238,81 @@ const ProviderServices = ({ match }) => {
                                           textAlign: "start",
                                         }}
                                       >
-                                        <Box sx={{ display: "flex" }}>
+                                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                          <Typography
+                                            color={"#2560FC"}
+                                            sx={{ marginRight: "auto" }}
+                                          >
+                                            {response.title}
+                                          </Typography>
+                                          <StarIcon sx={{ color: "gold" }} />
+                                          {response.rating}
+                                          <br />
+                                        </Box>
+                                        <Typography fontSize={14} pt={2}>
+                                          {response.description}
+                                        </Typography>
+                                        <br /> <br />
+                                        <Typography
+                                          color={"gray"}
+                                          fontSize={14}
+                                          sx={{ mt: -4 }}
+                                        >
+                                          2 Person | 150 min
+                                        </Typography>
+                                        <br />
+                                        <Box sx={{ display: "flex", mt: 3 }}>
+                                          <Typography
+                                            color={"#2560FC"}
+                                            sx={{ marginRight: "auto" }}
+                                          >
+                                            ${response.discounted_price}
+                                            <del style={{ color: "gray" }}>
+                                              ${response.price}
+                                            </del>
+                                          </Typography>
+
+                                          <Box sx={{ float: "right", mt: -1 }}>
+                                            <Button
+                                              variant="outlined"
+                                              onClick={() =>
+                                                handleOpen(response)
+                                              }
+                                              float="right"
+                                              size="small"
+                                            >
+                                              {t("Add")}
+                                            </Button>
+                                          </Box>
+                                        </Box>
+
+                                      </Box>
+                                    </CardContent>
+                                  </Grid>
+                                </Grid>
+
+                                {/* MOBILE SCREEN ONLY  */}
+                                <Grid container display={{ xs: "flex", sm: "none" }} spacing={3}>
+                                  <Grid item md={12} >
+                                    <CardMedia
+                                      image={response.image_of_the_service}
+                                      alt="hi"
+                                      sx={{
+                                        height: "200px",
+                                        width: "400px",
+                                        borderRadius: "4px",
+                                      }}
+                                    />
+                                  </Grid>
+                                  <Grid item md={12}>
+                                    <CardContent sx={{ ml: 2, p: 0 }}>
+                                      <Box
+                                        sx={{
+                                          display: "block",
+                                          textAlign: "start",
+                                        }}
+                                      >
+                                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                                           <Typography
                                             color={"#2560FC"}
                                             sx={{ marginRight: "auto" }}
@@ -238,13 +357,14 @@ const ProviderServices = ({ match }) => {
                                             >
                                               Add
                                             </Button>
-                                            <ToastContainer autoClose={3000} />
                                           </Box>
                                         </Box>
+
                                       </Box>
                                     </CardContent>
                                   </Grid>
                                 </Grid>
+
                               </Card>
                               <Divider />
                             </Box>
@@ -252,6 +372,7 @@ const ProviderServices = ({ match }) => {
                           </>
                         );
                       })}
+                      <ToastContainer />
                     </Box>
                   ) : (
                     <Box>
@@ -295,11 +416,11 @@ const ProviderServices = ({ match }) => {
                   )}
                 </Box>
               </Box>
-              <Box display={"flex"} justifyContent={"center"}>
-                <Stack spacing={2}>
-                  <Pagination count={3} color="primary" />
-                </Stack>
-              </Box>
+              {/* <Box display={"flex"} justifyContent={"center"}>
+                  <Stack spacing={2}>
+                    <Pagination count={3} color="primary" />
+                  </Stack>
+                </Box> */}
               <br />
             </Box>
           </Grid>
@@ -318,7 +439,6 @@ const ProviderServices = ({ match }) => {
                               <CardMedia
                                 sx={{ height: 250 }}
                                 image={response.banner_image}
-                                title="green iguana"
                               />
                               <CardMedia
                                 sx={{
@@ -331,7 +451,6 @@ const ProviderServices = ({ match }) => {
                                   mt: -5,
                                 }}
                                 image={response.image}
-                                title="green iguana"
                               />
                               <CardActions
                                 sx={{ justifyContent: "space-around", mb: 4 }}
@@ -477,7 +596,7 @@ const ProviderServices = ({ match }) => {
 
 export default ProviderServices;
 
-const RatingCard = ({}) => {
+const RatingCard = ({ }) => {
   return (
     <Box
       sx={{

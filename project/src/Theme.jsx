@@ -1,4 +1,4 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
 
 const lightTheme = createTheme({
   palette: {
@@ -14,13 +14,16 @@ const lightTheme = createTheme({
       box: "white",
       card: "white",
       addressBox: "#Fdfdfd",
-      input: "#3d3f48"
-      
+      input: "white",
+      provider: "white",
+      booking: "#f9f8f8",
+      heading: "#e8e8e8f2",
+      categories : "white",
     },
     color: {
       navLink: "black",
       logo: "blue",
-      catLink:'black'
+      catLink: 'black'
       // inputTag: "black"
     },
     fonts: {
@@ -28,8 +31,10 @@ const lightTheme = createTheme({
       h2: "20pt",
       h3: "16pt",
       h4: "12pt",
+    },
+    icons: {
+      icon: "black"
     }
-    
   },
 });
 
@@ -47,7 +52,11 @@ const darkTheme = createTheme({
       box: "#041C32",
       addressBox: "#343F53",
       card: "#343f53",
-      input: "#3d3f48"
+      input: "#3d3f48",
+      provider: "#1b3145",
+      booking: "#041C32",
+      heading: "#041C32",
+      categories: "#11283d"
     },
     color: {
       navLink: "white",
@@ -55,7 +64,13 @@ const darkTheme = createTheme({
       // inputTag: "black",
     },
     fonts: {
-      h1: "24pt"
+      h1: "24pt",
+      h2: "20pt",
+      h3: "16pt",
+      h4: "12pt",
+    },
+    icons: {
+      icon: "white"
     }
   },
 });

@@ -92,9 +92,9 @@ const Pnavigation = () => {
     let email = document.getElementById("editEmail").value;
     let phone = document.getElementById("editPhone").value;
 
-    console.log(Myname);
-    console.log(email);
-    console.log(phone);
+    // console.log(Myname);
+    // console.log(email);
+    // console.log(phone);
 
     setDefName(Myname);
     setDefEml(email);

@@ -15,6 +15,9 @@ import ProviderBookmark from "./ProviderBookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { Checkbox } from "@mui/material";
+import slugify from "slugify";
+import { ToastContainer, toast } from "react-toastify";
+import { t } from "i18next";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -35,6 +38,8 @@ export default function Provider() {
     const bookData = JSON.parse(localStorage.getItem("bookmark")) || [];
     bookData.push(item);
     localStorage.setItem("bookmark", JSON.stringify(bookData));
+
+    isLogin ? toast.success("Added to bookmark") : toast.error("Please Login !");
   };
 
   //we have to apply some logic for remove data from bookmark
@@ -42,6 +47,7 @@ export default function Provider() {
     const bookData = localStorage.getItem("bookmark") || [];
     bookData.pop(item);
     localStorage.removeItem("bookmark", item);
+    toast.info("Removed from bookmark")
   };
 
   useEffect(() => {
@@ -50,7 +56,10 @@ export default function Provider() {
 
   const theme = useTheme();
   const navigate = useNavigate();
-  console.log("Bookmark" + bookmart);
+  // console.log("Bookmark" + bookmart);
+
+  const isLogin = localStorage.getItem("isLoggedIn")
+
   return (
     <Box
       display={"flex"}
@@ -61,40 +70,47 @@ export default function Provider() {
       {isLoading ? (
         <>
           {provider.map((response) => {
+            const slug = slugify(response.company_name, { lower: true });
             return (
               <>
                 <Card
                   key={response.id}
-                  sx={{ maxWidth: 345, display: "inline-block" }}
-                  onClick={() =>
-                    navigate("/providers/services/" + response.partner_id)
-                  }
+                  sx={{ maxWidth: 345, display: "inline-block", cursor: "pointer" }}
                 >
                   <Box
                     sx={{
-                      mt: 1,
-                      ml: 36,
+                      mt: "1px",
+                      ml: "306px",
                       position: "absolute",
+                      borderRadius: "6px",
+                      background: "black"
                     }}
                   >
                     {/*user should able to Bookmark
                     but i want to remove book mark when user click on next buttom  */}
                     <Checkbox
-                      size="large"
+                      size="small"
                       sx={{ color: "white" }}
                       {...label}
                       icon={<BookmarkBorderIcon />}
                       checkedIcon={
-                        <BookmarkIcon onClick={() => handleremove(response)} />
+                       isLogin ? <BookmarkIcon onClick={() => handleremove(response)} /> : <BookmarkBorderIcon sx={{color: "white"}}/>
                       }
                       onClick={() => handle(response)}
                     />
+                    
                   </Box>
+
                   <CardMedia
                     sx={{ height: 240 }}
                     image={response.banner_image}
+                    onClick={() =>
+                      navigate("/providers/services/" + response.partner_id + '/' + slug)}
                   />
                   <CardMedia
+                    onClick={() =>
+                      navigate("/providers/services/" + response.partner_id + '/' + slug)
+                    }
                     sx={{
                       height: 80,
                       width: 80,
@@ -102,11 +118,14 @@ export default function Provider() {
                       borderRadius: "50px",
                       marginTop: "-40px",
                       marginLeft: "35%",
+                      cursor: "pointer",
                     }}
                     image={response.image}
                   />
                   <Box textAlign={"center"}>
-                    <CardContent>
+                    <CardContent onClick={() =>
+                      navigate("/providers/services/" + response.partner_id + '/' + slug)
+                    }>
                       <Typography
                         gutterBottom
                         variant="h5"
@@ -122,7 +141,7 @@ export default function Provider() {
                         sx={{ alignContent: "center" }}
                       />
                       <Button variant="contained" startIcon={<Done />}>
-                        {response.number_of_orders} Order Completed
+                        {response.number_of_orders} {t("Order Completed")}
                       </Button>
 
                       <div className="lines" style={{ paddingTop: "30px" }}>
@@ -130,7 +149,7 @@ export default function Provider() {
                       </div>
                       <Box>
                         <NavLink
-                          to={"/providers/services/" + response.partner_id}
+                          to={"/providers/services/" + response.partner_id + "/" + slug}
                           style={{
                             textAlign: "center",
                             justifyContent: "center",
@@ -141,7 +160,7 @@ export default function Provider() {
                             marginTop: 10,
                           }}
                         >
-                          View All Services <ArrowRightAltOutlined />
+                          {t("View All Services")} <ArrowRightAltOutlined />
                         </NavLink>
                       </Box>
                     </CardContent>
@@ -175,6 +194,7 @@ export default function Provider() {
           </Grid>
         </Grid>
       )}
+      <ToastContainer />
     </Box>
   );
 }
@@ -213,11 +233,12 @@ export const HomeProvider = () => {
       {isLoading ? (
         <>
           {provider.map((response) => {
+            const slug = slugify(response.company_name, { lower: true });
             return (
               <>
                 <Card
                   onClick={() =>
-                    navigate("/providers/services/" + response.partner_id)
+                    navigate("/providers/services/" + response.partner_id + '/' + slug)
                   }
                   key={response.id}
                   sx={{ maxWidth: 345, display: "inline-block" }}
@@ -233,6 +254,7 @@ export const HomeProvider = () => {
                       width: 80,
                       border: "5px solid white",
                       borderRadius: "50px",
+                      cursor: "pointer",
                       marginTop: "-40px",
                       marginLeft: "35%",
                     }}

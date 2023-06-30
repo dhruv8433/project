@@ -52,6 +52,7 @@
   padding-left: 0;
   padding-right: 0;
 }
+
 .css-m1uy8a-MuiPaper-root-MuiCard-root {
   box-shadow: 0;
 }
@@ -62,7 +63,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 71vh;
+  height: 60vh;
   width: 100%;
   border-radius: 10px;
 }
@@ -86,7 +87,7 @@
   width: 260px;
   background: #0000003b;
   background: rgb(2, 0, 36);
-  background: linear-gradient(0deg, rgb(2, 0, 36) 0%, rgba(0, 212, 255, 0) 57%);
+  background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgba(0, 212, 255, 0) 57%);
   border-radius: inherit;
 }
 
@@ -107,20 +108,63 @@
 
 .service-card:hover {
   transform: scale(1.05);
+  border-radius: 10px;
   transition: var(--global-transition);
 }
 
 /* add this swiper only to category not main home page section  */
 .swiper-wrapper-padding {
-  padding: 16px;
+  padding: 8px;
 }
 
-.css-o69gx8-MuiCardMedia-root{
+.css-o69gx8-MuiCardMedia-root {
   width: auto;
   object-fit: cover;
 }
 
-hr{
-  color: #dfdfdf;
+hr {
+  color: #c8b4b430;
   height: .1px;
+}
+
+img {
+  cursor: pointer;
+}
+
+.creative_category:hover {
+  border: 1px solid #4566d3;
+  border-radius: 4px;
+}
+
+.css-1ivbu65-MuiSvgIcon-root {
+  fill: currentColor;
+  font-size: 1.5rem;
+  color: white;
+  height: 25px;
+  width: 25px;
+}
+
+svg {
+  height: 20px;
+  width: 20px;
+}
+
+.css-10mi8st-MuiSvgIcon-root-MuiAvatar-fallback {
+  color: white;
+}
+
+.myinput {
+  height: 34px !important;
+  line-height: 28px !important;
+  padding-top: 0 !important;
+  /* padding-left: 1px !important; */
+  /* padding-right: 160px !important; */
+  caret-color: #fc8019;
+  width: 500px;
+  font-size: 18px !important;
+  font-weight: 500;
+}
+
+.footer-item:hover {
+  color: aqua;
 }
