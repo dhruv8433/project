@@ -7,7 +7,7 @@ import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
-const apiKey = "AIzaSyA0B2eTsnUMMG4SN6Agjz7JD3w_gCDj1lE";
+const apiKey = "YOUR_API_KEY";
 const mapApiJs = "https://maps.googleapis.com/maps/api/js";
 const geocodeJson = "https://maps.googleapis.com/maps/api/geocode/json";
 
