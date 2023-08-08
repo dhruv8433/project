@@ -19,11 +19,14 @@ const lightTheme = createTheme({
       booking: "#f9f8f8",
       heading: "#e8e8e8f2",
       categories : "white",
+      navLink:"black,"
     },
     color: {
       navLink: "black",
       logo: "blue",
-      catLink: 'black'
+      catLink: 'black',
+      secondary: '#575757',
+      phone: "#2664f7"
       // inputTag: "black"
     },
     fonts: {
@@ -56,11 +59,17 @@ const darkTheme = createTheme({
       provider: "#1b3145",
       booking: "#041C32",
       heading: "#041C32",
-      categories: "#11283d"
+      categories: "#11283d",
+      navLink: "white",
+
     },
     color: {
       navLink: "white",
       logo: "white",
+      catLink: "white",
+      secondary: "white",
+      phone: "white",
+
       // inputTag: "black",
     },
     fonts: {

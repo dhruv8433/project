@@ -1,30 +1,16 @@
 import React from "react";
 import Heading from "./Heading";
 import { Box, Button, Container, Grid, Rating } from "@mui/material";
-import ProfileNavigation from "./ProfileNavigation";
 import { useTheme } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
-import {
-  ArrowCircleLeft,
-  ArrowRight,
-  ArrowRightAltOutlined,
-  Done,
-  DoneRounded,
-} from "@mui/icons-material";
 import Bookmark from "./Bookmark";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import Pnavigation from "./Pnavigation";
+import { t } from "i18next";
+import Layout from "../../layout/Layout";
 
 const ProfileBookmark = () => {
 
-  document.title = "profile - bookmark | eDemand"
+  document.title = "Profile - Bookmark | eDemand"
 
 
   const theme = useTheme();
@@ -54,7 +40,7 @@ const ProfileBookmark = () => {
   }
 
   return (
-    <div>
+    <Layout>
       <Box>
         <Container>
           <Grid container spacing={3} sx={{ padding: 0 }}>
@@ -69,7 +55,7 @@ const ProfileBookmark = () => {
                   borderRadius: "10px",
                 }}
               >
-                <Heading heading="Bookmark" />
+                <Heading heading={t("Bookmarks")} />
                 <Box sx={{ m: 2 }}>
                   <Bookmark /> <br />
                 </Box>
@@ -78,7 +64,7 @@ const ProfileBookmark = () => {
           </Grid>
         </Container>
       </Box>
-    </div>
+    </Layout>
   );
 };
 

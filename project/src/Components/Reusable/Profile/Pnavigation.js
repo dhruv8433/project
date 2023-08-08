@@ -48,6 +48,7 @@ import RightContent from "./RightContent";
 import { useTheme } from "@emotion/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { t } from "i18next";
 
 const Pnavigation = () => {
   const [open, setOpen] = React.useState(false);
@@ -145,8 +146,8 @@ const Pnavigation = () => {
             ) : (
               <div style={{ marginLeft: 10, color: "white" }}>
                 <Typography fontSize="xl">{name}</Typography>
-                <Typography fontSize="10px">{email}</Typography>
-                <Typography fontSize="10px">+{contact}</Typography>
+                <Typography fontSize="14px">{email}</Typography>
+                <Typography fontSize="14px">+{contact}</Typography>
               </div>
             )}
 
@@ -161,7 +162,7 @@ const Pnavigation = () => {
                 mt: -12,
               }}
             >
-              Edit
+              {t("Edit")}
             </Button>
             <Backdrop
               sx={{
@@ -172,7 +173,7 @@ const Pnavigation = () => {
             >
               <Box
                 sx={{
-                  background: "white",
+                  background: theme.palette.background.box,
                   color: "black",
                   width: "400px",
                   borderRadius: "10px",
@@ -185,8 +186,10 @@ const Pnavigation = () => {
                   marginBottom={3}
                 >
                   <Box display={"flex"}>
-                    <Typography marginRight={"auto"}>Edit Profile</Typography>
-                    {<ClearIcon onClick={handleClose} />}
+
+                    <Typography marginRight={"auto"} color={theme.palette.color.navLink}>{t("Edit Profile")}</Typography>
+                    {<ClearIcon onClick={handleClose} sx={{color: theme.palette.color.navLink}}/>}
+
                   </Box>
                   {/* img */}
 
@@ -217,7 +220,7 @@ const Pnavigation = () => {
                   </Badge>
 
                   <Box display={"block"}>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>{t("Name")}</FormLabel>
                     <br />
                     <form>
                       <TextField
@@ -228,11 +231,11 @@ const Pnavigation = () => {
                         variant="outlined"
                         name="name"
                         required
-                        sx={{ background: "#F2F1F6" }}
+                        sx={{ background: theme.palette.background.input }}
                       />
                       <br />
                       <br />
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t("Email")}</FormLabel>
                       <br />
                       <TextField
                         id="editEmail"
@@ -243,12 +246,12 @@ const Pnavigation = () => {
                         name="email"
                         type="email"
                         required
-                        sx={{ background: "#F2F1F6" }}
+                        sx={{ background: theme.palette.background.input }}
                       />
                       <br />
                       <br />
-                      <FormLabel>Phone</FormLabel>
-                      <br />{" "}
+                      <FormLabel>{t("Phone")}</FormLabel>
+                      <br />
                       <TextField
                         id="editPhone"
                         placeholder="Enter Phone"
@@ -258,8 +261,8 @@ const Pnavigation = () => {
                         disabled
                         value={defnum}
                         variant="outlined"
-                        sx={{ background: "#F2F1F6" }}
-                      />{" "}
+                        sx={{ background: theme.palette.background.input }}
+                      />
                       <br />
                       <br />
                       <br />
@@ -269,7 +272,7 @@ const Pnavigation = () => {
                         sx={{ width: "350px" }}
                         onClick={submite}
                       >
-                        Save Profile
+                         {t("Save Profile")}
                       </Button>
                     </form>
                     <ToastContainer
@@ -285,248 +288,247 @@ const Pnavigation = () => {
                       theme="light"
                     />
                   </Box>
-                  {/* form */}
                 </Box>
               </Box>
             </Backdrop>
           </ListItem>
 
           <List component="nav" aria-label="main mailbox folders" sx={{}}>
-            <Link to={"/profile/booking"} style={{ textDecoration: "none" }}>
-              <ListItem
-                button
-                sx={{ paddingTop: 1, paddingBottom: 1 }}
-                href="/"
+              <Link to={"/profile/booking"} style={{ textDecoration: "none" }}>
+                <ListItem
+                  button
+                  sx={{ paddingTop: 1, paddingBottom: 1 }}
+                  href="/"
+                >
+                  <ListItemIcon>
+                    <Book sx={{ color: theme.palette.color.logo }} />
+                  </ListItemIcon>
+                  {/* booking address url  */}
+                  <Link
+                    to={"/profile/booking"}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
+                    primary="My Bookings"
+                  >
+                    {t("Bookings")}
+                  </Link>
+                  <IconButton
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <KeyboardArrowRight
+                      fontSize="xl3"
+                      sx={{ color: "text.tertiary", fontSize: 24 }}
+                    />
+                  </IconButton>
+                </ListItem>
+              </Link>
+              <Divider />
+              <Link to={"/profile/address"} style={{ textDecoration: "none" }}>
+                <ListItem
+                  button
+                  sx={{ paddingTop: 1, paddingBottom: 1 }}
+                  href="/"
+                >
+                  <ListItemIcon>
+                    <LocationCityOutlined sx={{ color: theme.palette.color.logo }} />
+                  </ListItemIcon>
+                  <Link
+                    to={"/profile/address"}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
+                    primary="My Bookings"
+                  >
+                    {t("Manage Addresses")}
+                  </Link>
+                  <IconButton
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <KeyboardArrowRight
+                      fontSize="xl3"
+                      sx={{ color: "text.tertiary", fontSize: 24 }}
+                    />
+                  </IconButton>
+                </ListItem>
+              </Link>
+              <Divider />
+              <Link to={"/profile/payment"} style={{ textDecoration: "none" }}>
+                <ListItem
+                  button
+                  sx={{ paddingTop: 1, paddingBottom: 1 }}
+                  href="/"
+                >
+                  <ListItemIcon>
+                    <AccountBalanceWalletOutlined sx={{ color: theme.palette.color.logo }} />
+                  </ListItemIcon>
+                  <Link
+                    to={"/profile/payment"}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
+                    primary="My Bookings"
+                  >
+                    {t("Payment History")}
+                  </Link>
+                  <IconButton
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <KeyboardArrowRight
+                      fontSize="xl3"
+                      sx={{ color: "text.tertiary", fontSize: 24 }}
+                    />
+                  </IconButton>
+                </ListItem>
+              </Link>
+              <Divider />
+              <Link to={"/profile/bookmark"} style={{ textDecoration: "none" }}>
+                <ListItem
+                  button
+                  sx={{ paddingTop: 1, paddingBottom: 1 }}
+                  href="/"
+                >
+                  <ListItemIcon>
+                    <FavoriteBorder sx={{ color: theme.palette.color.logo }} />
+                  </ListItemIcon>
+                  <Link
+                    to={"/profile/bookmark"}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
+                    primary="My Bookings"
+                  >
+                    {t("Bookmarks")}
+                  </Link>
+                  <IconButton
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <KeyboardArrowRight
+                      fontSize="xl3"
+                      sx={{ color: "text.tertiary", fontSize: 24 }}
+                    />
+                  </IconButton>
+                </ListItem>
+              </Link>
+              <Divider />
+              <Link
+                to={"/profile/notifications"}
+                style={{ textDecoration: "none" }}
               >
-                <ListItemIcon>
-                  <Book sx={{ color: "blue" }} />
-                </ListItemIcon>
-                {/* booking address url  */}
-                <Link
-                  to={"/profile/booking"}
-                  style={{
-                    textDecoration: "none",
-                    color: theme.palette.color.navLink,
-                  }}
-                  primary="My Bookings"
+                <ListItem
+                  button
+                  sx={{ paddingTop: 1, paddingBottom: 1 }}
+                  href="/"
                 >
-                  Mybooking
-                </Link>
-                <IconButton
-                  sx={{
-                    marginLeft: "auto",
-                  }}
-                >
-                  <KeyboardArrowRight
-                    fontSize="xl3"
-                    sx={{ color: "text.tertiary", fontSize: 24 }}
-                  />
-                </IconButton>
-              </ListItem>
-            </Link>
-            <Divider />
-            <Link to={"/profile/address"} style={{ textDecoration: "none" }}>
-              <ListItem
-                button
-                sx={{ paddingTop: 1, paddingBottom: 1 }}
-                href="/"
+                  <ListItemIcon>
+                    <NotificationsOutlined sx={{ color: theme.palette.color.logo }} />
+                  </ListItemIcon>
+                  <Link
+                    to={"/profile/notifications"}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
+                    primary="My Bookings"
+                  >
+                    {t("Notifications")}
+                  </Link>
+                  <IconButton
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <KeyboardArrowRight
+                      fontSize="xl3"
+                      sx={{ color: "text.tertiary", fontSize: 24 }}
+                    />
+                  </IconButton>
+                </ListItem>
+              </Link>
+              <Divider />
+              <Link
+                fullWidth
+                to={"/logout"}
+                style={{ textDecoration: "none" }}
               >
-                <ListItemIcon>
-                  <LocationCityOutlined sx={{ color: "blue" }} />
-                </ListItemIcon>
-                <Link
-                  to={"/profile/address"}
-                  style={{
-                    textDecoration: "none",
-                    color: theme.palette.color.navLink,
-                  }}
-                  primary="My Bookings"
+                <ListItem
+                  button
+                  sx={{ paddingTop: 1, paddingBottom: 1 }}
+                  href="/"
                 >
-                  Manage Address
-                </Link>
-                <IconButton
-                  sx={{
-                    marginLeft: "auto",
-                  }}
-                >
-                  <KeyboardArrowRight
-                    fontSize="xl3"
-                    sx={{ color: "text.tertiary", fontSize: 24 }}
-                  />
-                </IconButton>
-              </ListItem>
-            </Link>
-            <Divider />
-            <Link to={"/profile/payment"} style={{ textDecoration: "none" }}>
-              <ListItem
-                button
-                sx={{ paddingTop: 1, paddingBottom: 1 }}
-                href="/"
-              >
-                <ListItemIcon>
-                  <AccountBalanceWalletOutlined sx={{ color: "blue" }} />
-                </ListItemIcon>
-                <Link
-                  to={"/profile/payment"}
-                  style={{
-                    textDecoration: "none",
-                    color: theme.palette.color.navLink,
-                  }}
-                  primary="My Bookings"
-                >
-                  Payment
-                </Link>
-                <IconButton
-                  sx={{
-                    marginLeft: "auto",
-                  }}
-                >
-                  <KeyboardArrowRight
-                    fontSize="xl3"
-                    sx={{ color: "text.tertiary", fontSize: 24 }}
-                  />
-                </IconButton>
-              </ListItem>
-            </Link>
-            <Divider />
-            <Link to={"/profile/bookmark"} style={{ textDecoration: "none" }}>
-              <ListItem
-                button
-                sx={{ paddingTop: 1, paddingBottom: 1 }}
-                href="/"
-              >
-                <ListItemIcon>
-                  <FavoriteBorder sx={{ color: "blue" }} />
-                </ListItemIcon>
-                <Link
-                  to={"/profile/bookmark"}
-                  style={{
-                    textDecoration: "none",
-                    color: theme.palette.color.navLink,
-                  }}
-                  primary="My Bookings"
-                >
-                  My Bookmark
-                </Link>
-                <IconButton
-                  sx={{
-                    marginLeft: "auto",
-                  }}
-                >
-                  <KeyboardArrowRight
-                    fontSize="xl3"
-                    sx={{ color: "text.tertiary", fontSize: 24 }}
-                  />
-                </IconButton>
-              </ListItem>
-            </Link>
-            <Divider />
-            <Link
-              to={"/profile/notifications"}
-              style={{ textDecoration: "none" }}
-            >
-              <ListItem
-                button
-                sx={{ paddingTop: 1, paddingBottom: 1 }}
-                href="/"
-              >
-                <ListItemIcon>
-                  <NotificationsOutlined sx={{ color: "blue" }} />
-                </ListItemIcon>
-                <Link
-                  to={"/profile/notifications"}
-                  style={{
-                    textDecoration: "none",
-                    color: theme.palette.color.navLink,
-                  }}
-                  primary="My Bookings"
-                >
-                  Notification
-                </Link>
-                <IconButton
-                  sx={{
-                    marginLeft: "auto",
-                  }}
-                >
-                  <KeyboardArrowRight
-                    fontSize="xl3"
-                    sx={{ color: "text.tertiary", fontSize: 24 }}
-                  />
-                </IconButton>
-              </ListItem>
-            </Link>
-            <Divider />
-            <Link
-              fullWidth
-              to={"/profile/logout"}
-              style={{ textDecoration: "none" }}
-            >
-              <ListItem
-                button
-                sx={{ paddingTop: 1, paddingBottom: 1 }}
-                href="/"
-              >
-                <ListItemIcon>
-                  <Logout sx={{ color: "blue" }} />
-                </ListItemIcon>
+                  <ListItemIcon>
+                    <Logout sx={{ color: theme.palette.color.logo }} />
+                  </ListItemIcon>
 
-                <Link
-                  to={"/profile/logout"}
-                  style={{
-                    textDecoration: "none",
-                    color: theme.palette.color.navLink,
-                  }}
-                  primary="My Bookings"
-                  onClick={() => setIsVisible(true)}
-                >
-                  Logout
-                </Link>
+                  <Link
+                    to={"/logout"}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
+                    primary="My Bookings"
+                    onClick={() => setIsVisible(true)}
+                  >
+                    {t("Logout")}
+                  </Link>
 
-                <IconButton
-                  sx={{
-                    marginLeft: "auto",
-                  }}
+                  <IconButton
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <KeyboardArrowRight
+                      fontSize="xl3"
+                      sx={{ color: "text.tertiary", fontSize: 24 }}
+                    />
+                  </IconButton>
+                </ListItem>
+              </Link>{" "}
+              <Divider />
+              <Link to={"/delete-account"} style={{ textDecoration: "none" }}>
+                <ListItem
+                  button
+                  sx={{ paddingTop: 1, paddingBottom: 1 }}
+                  href="/"
                 >
-                  <KeyboardArrowRight
-                    fontSize="xl3"
-                    sx={{ color: "text.tertiary", fontSize: 24 }}
-                  />
-                </IconButton>
-              </ListItem>
-            </Link>{" "}
-            <Divider />
-            <Link to={"/profile/delete"} style={{ textDecoration: "none" }}>
-              <ListItem
-                button
-                sx={{ paddingTop: 1, paddingBottom: 1 }}
-                href="/"
-              >
-                <ListItemIcon>
-                  <DeleteOutline sx={{ color: "red" }} />
-                </ListItemIcon>
-                <Link
-                  to={"/profile/delete"}
-                  style={{
-                    textDecoration: "none",
-                    color: theme.palette.color.navLink,
-                  }}
-                  primary="My Bookings"
-                >
-                  Delete Account
-                </Link>
-                <IconButton
-                  sx={{
-                    marginLeft: "auto",
-                  }}
-                >
-                  <KeyboardArrowRight
-                    fontSize="xl3"
-                    sx={{ color: "text.tertiary", fontSize: 24 }}
-                  />
-                </IconButton>
-              </ListItem>
-            </Link>
-          </List>
+                  <ListItemIcon>
+                    <DeleteOutline sx={{ color: "red" }} />
+                  </ListItemIcon>
+                  <Link
+                    to={"/delete-account"}
+                    style={{
+                      textDecoration: "none",
+                      color: theme.palette.color.navLink,
+                    }}
+                    primary="My Bookings"
+                  >
+                    {t("Delete Account")}
+                  </Link>
+                  <IconButton
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <KeyboardArrowRight
+                      fontSize="xl3"
+                      sx={{ color: "text.tertiary", fontSize: 24 }}
+                    />
+                  </IconButton>
+                </ListItem>
+              </Link>
+            </List>
         </Box>
       </Box>
     </div>

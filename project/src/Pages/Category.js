@@ -1,13 +1,15 @@
 import React from 'react'
 import Layout from '../Components/layout/Layout'
-import Categorys from '../Components/Reusable/Categorys'
-
+import Categorys from '../Components/Reusable/Sections/Categorys'
 const Category = () => {
     document.title = "Categories | eDemand"
+
     return (
-        <div>
+        <Layout>
+            <div>
                 <Categorys />
-        </div>
+            </div>
+        </Layout>
     )
 }
 

@@ -14,7 +14,7 @@ const Booking = () => {
     setOpen(true);
   };
   const [file, setFile] = useState(null);
-  const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+  const cartData = JSON.parse(localStorage.getItem("cart-booking")) || [];
 
   const [itemQuantities, setItemQuantities] = useState(() => {
     const storedItemQuantities = JSON.parse(localStorage.getItem("itemQuantities"));

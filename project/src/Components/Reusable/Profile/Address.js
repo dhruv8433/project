@@ -1,21 +1,28 @@
-import { DeleteOutline, EditOutlined } from "@mui/icons-material";
+import { CloseRounded, DeleteOutline, EditOutlined } from "@mui/icons-material";
 import {
   Backdrop,
   Box,
   Button,
   Divider,
+  FilledInput,
+  FormControl,
   Grid,
   IconButton,
-  Modal,
+  MenuItem,
+  OutlinedInput,
   Radio,
-  RadioGroup,
   TextField,
   Typography,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import GoogleMapWithLocation from "../Sections/GoogleMapWithLocation";
+import { t } from "i18next";
+import { ThemeContext, useTheme } from "@emotion/react";
+import AddressForm, { UpdateAddress, UpdateForm } from "./AddressForm";
+import { API_URL } from "../../../config/config";
 
-const Address = () => {
+const Address = ({ onSelectAddress }) => {
   const [selectedValue, setSelectedValue] = React.useState("a");
   const [defName, setDefName] = useState([]);
   const [defAddress, setDefAddress] = useState([]);
@@ -57,7 +64,7 @@ const Address = () => {
   return (
     <div>
       <Box>
-        <DynamicAddress />
+        <DynamicAddress onSelectAddress={onSelectAddress} />
       </Box>
     </div>
   );
@@ -104,6 +111,8 @@ export const AddAddress = () => {
     isOpenAdd(false);
   };
 
+  const theme = useTheme();
+
   return (
     <>
       <Box
@@ -117,19 +126,24 @@ export const AddAddress = () => {
           fullWidth
           onClick={handleOpenAddress}
         >
-          +Add New Address
+          +{t("Add New Address")}
         </Button>
 
-        <Backdrop open={openAdd}>
-          <Box sx={{ background: "white" }} borderRadius={"10px"} padding={3}>
-            <Typography>Add New Address</Typography>
+        <Backdrop open={openAdd} sx={{ zIndex: 1000 }}>
+          <Box
+            sx={{ background: theme.palette.background.box, width: "1000px" }}
+            borderRadius={"10px"}
+            padding={3}
+          >
+            <Box display={"flex"} justifyContent={"space-between"}>
+              <Typography>Add New Address</Typography>
+              <IconButton sx={{ mt: -1 }} onClick={handleCloseAdderss}>
+                <CloseRounded />
+              </IconButton>
+            </Box>
             <Divider />
             <br />
             <AddressForm />
-            <br />
-            <Button variant="outlined" fullWidth onClick={handleCloseAdderss}>
-              Cancel
-            </Button>
           </Box>
         </Backdrop>
       </Box>
@@ -139,30 +153,21 @@ export const AddAddress = () => {
 
 export default Address;
 
-const DynamicAddress = () => {
+// --------------------Dynamic Address-----------------------
+export const DynamicAddress = ({ onSelectAddress }) => {
   const [addressList, setAddressList] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
   const [deleteIndex, setDeleteIndex] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [address, setAddress] = useState([]);
 
   useEffect(() => {
-    const storedAddresses = localStorage.getItem("addresses");
+    const storedAddresses = localStorage.getItem("coordinates");
     if (storedAddresses) {
       setAddressList(JSON.parse(storedAddresses));
     }
   }, []);
-
-  const handleSelect = (index) => {
-    setSelectedAddress(index);
-  };
-
-  const handleEdit = (index) => {
-    setEditIndex(index);
-  };
-
-  const handleEditClose = () => {
-    setEditIndex(null);
-  };
 
   const handleDelete = (index) => {
     setDeleteIndex(index);
@@ -172,23 +177,20 @@ const DynamicAddress = () => {
     setDeleteIndex(null);
   };
 
-  const handleUpdate = (index) => {
-    const updatedAddresses = [...addressList];
-    const nameInput = document.getElementById(`updateName${index}`);
-    const addressInput = document.getElementById(`updateAddress${index}`);
-    const newName = nameInput.value.trim();
-    const newAddress = addressInput.value.trim();
+  const handleSelect = (index) => {
+    setSelectedAddress(index);
+    const selectedAddress = addressList[index];
+    onSelectAddress(selectedAddress); // Call the onSelectAddress function with the selected address object
+  };
 
-    if (newName === "" || newAddress === "") {
-      toast.error("Name and address cannot be empty");
-      return;
-    }
+  const handleEdit = (index) => {
+    setEditIndex(index);
+    setOpen(true);
+  };
 
-    updatedAddresses[index].name = newName;
-    updatedAddresses[index].address = newAddress;
-    localStorage.setItem("addresses", JSON.stringify(updatedAddresses));
-    setAddressList(updatedAddresses);
+  const handleEditClose = () => {
     setEditIndex(null);
+    setOpen(false);
   };
 
   const handleDeleteAddress = (index) => {
@@ -199,9 +201,38 @@ const DynamicAddress = () => {
     setDeleteIndex(null);
   };
 
+  const handleUpdate = (index, updatedAddress) => {
+    const updatedAddresses = [...addressList];
+    updatedAddresses[index] = updatedAddress;
+    localStorage.setItem("addresses", JSON.stringify(updatedAddresses));
+    setAddressList(updatedAddresses);
+    setEditIndex(null);
+  };
+
+  const theme = useTheme();
+
+  useEffect(() => {
+    var myHeaders = new Headers();
+    const token = localStorage.getItem("Token");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(`${API_URL}/get_address`, requestOptions)
+      .then((response) => response.json())
+      .then((address) => {
+        setAddress(address.data)
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
+
   return (
     <>
-      {addressList.map((address, index) => (
+    {address.length >= 0 ? (address.map((address, index) => (
         <Box
           key={index}
           sx={{
@@ -224,7 +255,7 @@ const DynamicAddress = () => {
                     name="radio-buttons"
                     inputProps={{ "aria-label": "A" }}
                   />
-                  {address.name}
+                  {address.city_name}
                 </Typography>
                 <Button
                   variant="outlined"
@@ -236,7 +267,7 @@ const DynamicAddress = () => {
                     mt: 1,
                   }}
                 >
-                  {address.location}
+                  {address.type}
                 </Button>
               </Grid>
               <Grid item>
@@ -256,40 +287,39 @@ const DynamicAddress = () => {
                 >
                   <EditOutlined sx={{ fontSize: "large" }} />
                 </IconButton>
-                <Backdrop open={editIndex === index}>
+
+                <Backdrop open={editIndex === index} sx={{ zIndex: 1000 }}>
                   <Box
-                    sx={{ background: "white", p: 2, width: 300, zIndex: 1 }}
+                    sx={{
+                      background: theme.palette.background.box,
+                      width: "1000px",
+                      borderRadius: "10px",
+                      padding: 3,
+                    }}
                   >
-                    <label>Name:</label>
-                    <br />
-                    <br />
-                    <TextField
-                      defaultValue={address.name}
-                      id={`updateName${index}`}
-                      fullWidth
-                    />
-                    <br />
-                    <br />
-                    <label>Address:</label>
-                    <br />
-                    <br />
-                    <TextField
-                      defaultValue={address.address}
-                      id={`updateAddress${index}`}
-                      fullWidth
-                    />
-                    <br />
-                    <br />
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={() => handleUpdate(index)}
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      marginBottom={2}
                     >
-                      Save
-                    </Button>
-                    <Button onClick={handleEditClose}>Close</Button>
+                      <Typography variant="h6">Update Address</Typography>
+                      <IconButton onClick={handleEditClose}>
+                        <CloseRounded />
+                      </IconButton>
+                    </Box>
+                    <Divider />
+                    {/* Render the UpdateAddress component with the appropriate address */}
+                    {editIndex === index && (
+                      <UpdateAddress
+                        address={address}
+                        addressUpdate={handleUpdate}
+                        index={index}
+                      />
+                    )}
                   </Box>
                 </Backdrop>
+
                 <IconButton
                   aria-label="delete"
                   size="small"
@@ -324,140 +354,11 @@ const DynamicAddress = () => {
             </Grid>
           </Box>
           <Typography color="text.secondary" variant="body2">
-            {address.address}
+            {address.area}
           </Typography>
         </Box>
-      ))}
+      ))) : (<div>No Address Found</div>)}
+      
     </>
-  );
-};
-
-const AddressForm = () => {
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [location, setLocation] = useState("home");
-  const [addressList, setAddressList] = useState([]);
-
-  useEffect(() => {
-    const storedAddresses = localStorage.getItem("addresses");
-    if (storedAddresses) {
-      setAddressList(JSON.parse(storedAddresses));
-    }
-  }, []);
-
-  const handleAddAddress = () => {
-    if (name.trim() !== "" && address.trim() !== "") {
-      if (addressList.length >= 3) {
-        toast.warning("You can only add up to 3 addresses");
-        return;
-      }
-
-      const newAddress = {
-        name,
-        address,
-        location,
-      };
-      const updatedAddressList = [...addressList, newAddress];
-      setAddressList(updatedAddressList);
-      localStorage.setItem("addresses", JSON.stringify(updatedAddressList));
-      setName("");
-      setAddress("");
-      setLocation("home");
-    }
-  };
-
-  const handleEdit = (index) => {
-    const updatedAddressList = [...addressList];
-    const editedAddress = updatedAddressList[index];
-
-    setName(editedAddress.name);
-    setAddress(editedAddress.address);
-    setLocation(editedAddress.location);
-
-    updatedAddressList.splice(index, 1);
-    setAddressList(updatedAddressList);
-    localStorage.setItem("addresses", JSON.stringify(updatedAddressList));
-  };
-
-  const handleDelete = (index) => {
-    const updatedAddressList = [...addressList];
-    updatedAddressList.splice(index, 1);
-    setAddressList(updatedAddressList);
-    localStorage.setItem("addresses", JSON.stringify(updatedAddressList));
-  };
-
-  return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={6}>
-        <Box>
-          <Typography variant="h6" gutterBottom>
-            Add New Address
-          </Typography>
-          <TextField
-            label="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Location"
-            select
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            fullWidth
-            margin="normal"
-          >
-            <option value="home">Home</option>
-            <option value="office">Office</option>
-          </TextField>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAddAddress}
-          >
-            Add Address
-          </Button>
-          <ToastContainer />
-        </Box>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Box>
-          <Typography variant="h6" gutterBottom>
-            Existing Addresses
-          </Typography>
-          {addressList.map((address, index) => (
-            <>
-            <Box key={index} sx={{border: "1px solid #dfdfdf", borderRadius: "10px", padding:1}}>
-              <Typography variant="subtitle1">{address.name}</Typography>
-              <Typography>{address.address}</Typography>
-              <IconButton
-                aria-label="edit"
-                size="small"
-                onClick={() => handleEdit(index)}
-              >
-                <EditOutlined />
-              </IconButton>
-              <IconButton
-                aria-label="delete"
-                size="small"
-                onClick={() => handleDelete(index)}
-              >
-                <DeleteOutline />
-              </IconButton>
-            </Box>
-            <br />
-            </>
-          ))}
-        </Box>
-      </Grid>
-    </Grid>
   );
 };

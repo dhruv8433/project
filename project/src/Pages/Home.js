@@ -1,23 +1,18 @@
 import React, { useEffect } from 'react'
-import HomePage, { HomePageSmallDevice } from '../Components/Reusable/HomePage'
-import HomeCategory from '../Components/Reusable/HomeCategory'
-import { Grid } from '@mui/material'
+import HomePage, { HomePageSmallDevice } from '../Components/Reusable/Sections/HomePage'
+import HomeCategory from '../Components/Reusable/Sections/HomeCategory'
+import HomeSection from '../Components/Reusable/Sections/HomeSection'
+import HomeFinal from '../Components/Reusable/Sections/HomeFinal'
+import Layout from '../Components/layout/Layout'
 
 const Home = () => {
   useEffect(() => {
     document.title = "Home | eDemand"
-  }, [])
+  }, [])  
   return (
-    <div>
-      {/* calling just two function for home page Homepage contained only image slider with inputs and HomeCategory contianed all services   */}
-      <Grid container xs={12} display={{xs: "none", md:"block"}}>
-          <HomePage />
-      </Grid>
-      <Grid container md={12} display={{ xs: "block", md: "none" }}>
-        <HomePageSmallDevice />
-      </Grid>
-      <HomeCategory />
-    </div>
+    <Layout>
+      <HomeFinal />
+    </Layout>
   )
 }
 

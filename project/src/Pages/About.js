@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react'
-import AboutPage from '../Components/Reusable/AboutPage'
+import React from 'react'
+import AboutPage from '../Components/Reusable/Sections/AboutPage'
 import Layout from '../Components/layout/Layout'
 
 const About = () => {
-  useEffect(()=>{
-    document.title = "about | eDemand"
-  },[])
+  document.title = "About | eDemand"
   return (
-    <div>
+    <Layout>
+      <div>
         <AboutPage />
-    </div>
+      </div>
+    </Layout>
   )
 }
 

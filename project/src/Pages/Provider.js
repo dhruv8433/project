@@ -1,15 +1,17 @@
 import React from "react";
-import Providers from "../Components/Reusable/Providers";
+import Providers from "../Components/Reusable/Sections/Providers";
 import Layout from "../Components/layout/Layout";
-import SearchProvider from "../Components/Reusable/SearchProvider";
+import SearchProvider from "../Components/Reusable/Sections/SearchProvider";
 
 const Provider = () => {
   document.title = "Providers | eDemand"
   return (
-    <div>
-      <SearchProvider />
-      <Providers />
-    </div>
+    <Layout>
+      <div>
+        <SearchProvider />
+        <Providers />
+      </div>
+    </Layout>
   );
 };
 
