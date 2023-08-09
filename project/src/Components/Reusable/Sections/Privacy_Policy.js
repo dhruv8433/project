@@ -7,16 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
 const Privacy_Policy = () => {
 
-  const [privacy, setPrivacy] = useState([]);
+  const privacy = localStorage.getItem("Privacy")
   const theme = useTheme();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    api.get_settings().then((setting) => {
-      console.log(setting.data.about_us);
-      setPrivacy(setting.data.privacy_policy.privacy_policy);
-    });
-  }, []);
 
   return (
     <Layout>

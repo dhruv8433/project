@@ -22,7 +22,7 @@ To set up the eDemand Service project locally, please follow these steps:
 1. Clone the project repository:
 
    ```bash
-   git clone https://github.com/your-username/edemand-service.git
+   git clone https://github.com/dhruv8433/edemand.git
    ```
 
 2. Navigate to the project directory:

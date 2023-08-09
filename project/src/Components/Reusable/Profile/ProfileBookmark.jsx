@@ -1,44 +1,18 @@
 import React from "react";
 import Heading from "./Heading";
-import { Box, Button, Container, Grid, Rating } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Bookmark from "./Bookmark";
 import { useParams } from "react-router";
 import Pnavigation from "./Pnavigation";
 import { t } from "i18next";
 import Layout from "../../layout/Layout";
+import { API_URL } from "../../../config/config";
 
 const ProfileBookmark = () => {
-
-  document.title = "Profile - Bookmark | eDemand"
-
+  document.title = "Profile - Bookmark | eDemand";
 
   const theme = useTheme();
-
-  const params = useParams();
-  const { partner_id } = params;
-
-  async function allData() {
-    var formdata = new FormData();
-    formdata.append("latitude", "23.2507356");
-    formdata.append("longitude", "69.6689201");
-    formdata.append("partner_id", `${partner_id}`);
-
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
-    };
-
-    const response = await fetch(
-      "https://edemand.wrteam.me/api/v1/get_services",
-      requestOptions
-    );
-    const result = await response.json();
-    // console.log(result);
-    return result;
-  }
-
   return (
     <Layout>
       <Box>

@@ -119,6 +119,7 @@ function App() {
                     providerAvailable ? <ProviderServices /> : <StartPage />
                   }
                 />
+                <Route path="/sub-categories/:id/:name" element={providerAvailable ? <NavigateCategorys /> : <StartPage />}></Route>
                 <Route
                   path="/categories/:id/:title"
                   element={

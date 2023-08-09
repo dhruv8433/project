@@ -8,26 +8,24 @@ import {
   Drawer,
   Container,
   Avatar,
-  Divider,
+  Backdrop,
 } from "@mui/material";
 import "intl-tel-input/build/css/intlTelInput.css";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import Cart from "../Reusable/Sections/CartItem";
-import { ArrowBackIosNewOutlined } from "@mui/icons-material";
-import DateTime from "../Reusable/Sections/DateTime";
-
 import NavigationLinks, {
   PhoneNavigationLinks,
 } from "./Navigation/NavigationLinks";
 import Authentication from "./Navigation/Authentication";
 import EdemandSetting from "./Navigation/EdemandSetting";
 import { t } from "i18next";
+import { ToastContainer } from "react-toastify";
+import EditProfile from "../Reusable/Profile/EditProfile";
 
 //for creating styled logo
 const StyledToolBar = styled(Toolbar)({
@@ -264,6 +262,7 @@ const Navigation = ({ check, changeLight, changeDark }) => {
           </Box>
         </Container>
       </AppBar>
+      <ToastContainer />
     </Box>
   );
 };

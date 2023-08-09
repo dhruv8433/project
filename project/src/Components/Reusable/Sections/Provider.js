@@ -11,42 +11,28 @@ import {
   Grid,
   Rating,
   Skeleton,
+  useTheme,
 } from "@mui/material";
 import { ArrowRightAltOutlined, Done } from "@mui/icons-material";
 import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import api from "../../../API/Fetch_data_Api";
-import { useTheme } from "@emotion/react";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { Checkbox } from "@mui/material";
 import slugify from "slugify";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { t } from "i18next";
 import { Link as MyLink } from "@mui/material";
 import Layout from "../../layout/Layout";
 import { PartnerSkeleton } from "./Skeletons";
+import { API_URL } from "../../../config/config";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 export default function Provider() {
   const [provider, setProvider] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [checked, setChecked] = useState(false);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
-
-  useEffect(() => {
-    // Load checked state from Local Storage on component mount
-    const storedChecked = localStorage.getItem("isChecked");
-    if (storedChecked === "true") {
-      setChecked(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    const storedBookmarks =
-      JSON.parse(localStorage.getItem("bookmarkedItems")) || [];
-    setBookmarkedItems(storedBookmarks);
-  }, []);
 
   const ApiProviders = () => {
     api
@@ -60,38 +46,43 @@ export default function Provider() {
     const isBookmarked = bookmarkedItems.some(
       (bookmark) => bookmark.partner_id === item.partner_id
     );
-    console.log(item);
 
     if (isBookmarked) {
-      // Remove logic here (e.g., handleremove(item))
       const updatedBookmarks = bookmarkedItems.filter(
         (bookmark) => bookmark.partner_id !== item.partner_id
       );
       setBookmarkedItems(updatedBookmarks);
       localStorage.setItem("bookmarkedItems", JSON.stringify(updatedBookmarks));
+
+      // Remove logic here (e.g., handleremove(item))
+      handleremove(item);
     } else {
       const updatedBookmarks = [...bookmarkedItems, item];
       setBookmarkedItems(updatedBookmarks);
       localStorage.setItem("bookmarkedItems", JSON.stringify(updatedBookmarks));
     }
 
-    var formdata = new FormData();
     const lat = localStorage.getItem("Lat");
     const lng = localStorage.getItem("Lng");
-    formdata.append("type", "add");
+
+    var formdata = new FormData();
+    formdata.append("type", isBookmarked ? "remove" : "add");
     formdata.append("partner_id", item.partner_id);
     formdata.append("latitude", lat);
     formdata.append("longitude", lng);
 
-    api.get_bookmarks(formdata).then((response) => {
-      console.log(response);
-    });
+    api.get_bookmarks(formdata)
+      .then((response) => {
+        toast.success(response.message);
+      });
 
-    if (checked) {
-      localStorage.setItem("isChecked", "true"); // Update Local Storage
+    // Update Local Storage
+    localStorage.setItem("isChecked", isBookmarked ? "false" : "true");
+
+    if (!isLogin) {
+      toast.error("Please Login !");
+      return;
     }
-    setChecked(true);
-    isLogin ? <></> : toast.error("Please Login !");
   };
 
   //we have to apply some logic for remove data from bookmark
@@ -99,7 +90,6 @@ export default function Provider() {
     const bookData = localStorage.getItem("bookmark") || [];
     bookData.pop(item);
     localStorage.removeItem("bookmark", item);
-    toast.info("Removed from bookmark");
   };
 
   useEffect(() => {
@@ -108,12 +98,7 @@ export default function Provider() {
 
   const theme = useTheme();
   const navigate = useNavigate();
-  // console.log("Bookmark" + bookmart);
-
   const isLogin = localStorage.getItem("isLoggedIn");
-
-  const bookmarked = localStorage.getItem("bookmarkedItems");
-  console.log(bookmarked);
 
   return (
     <Box
@@ -145,7 +130,7 @@ export default function Provider() {
                       background: "black",
                     }}
                   >
-                    <Checkbox
+                    {isLogin ? <Checkbox
                       size="small"
                       sx={{ color: "white" }}
                       {...label}
@@ -167,7 +152,7 @@ export default function Provider() {
                         event.stopPropagation();
                         handle(response);
                       }}
-                    />
+                    /> : ""}
                   </Box>
                   <Link
                     to={
@@ -196,9 +181,9 @@ export default function Provider() {
                         onClick={() =>
                           navigate(
                             "/providers/services/" +
-                              response.partner_id +
-                              "/" +
-                              slug
+                            response.partner_id +
+                            "/" +
+                            slug
                           )
                         }
                       >
@@ -267,11 +252,11 @@ export default function Provider() {
               <PartnerSkeleton />
               <PartnerSkeleton />
               <PartnerSkeleton />
- 
+
               <PartnerSkeleton />
               <PartnerSkeleton />
               <PartnerSkeleton />
- 
+
               <PartnerSkeleton />
               <PartnerSkeleton />
               <PartnerSkeleton />
@@ -279,7 +264,6 @@ export default function Provider() {
           </Grid>
         </Grid>
       )}
-      <ToastContainer />
     </Box>
   );
 }
@@ -304,8 +288,10 @@ export const SpecificProvider = () => {
 
   const get_provider = () => {
     var formdata = new FormData();
-    formdata.append("latitude", "23.2507356");
-    formdata.append("longitude", "69.6339007");
+    const lat = localStorage.getItem("Lat");
+    const lng = localStorage.getItem("Lng");
+    formdata.append("latitude", lat);
+    formdata.append("longitude", lng);
     // formdata.append("filter", "discount");
     formdata.append("sub_category_id", id);
 
@@ -315,7 +301,7 @@ export const SpecificProvider = () => {
       redirect: "follow",
     };
 
-    fetch("https://edemand.wrteam.me/api/v1/get_providers", requestOptions)
+    fetch(`${API_URL}/get_providers`, requestOptions)
       .then((response) => response.json())
       .then((response) => setProvider(response.data))
       .then((response) => setIsLoading(true))
@@ -472,7 +458,7 @@ export const SpecificProvider = () => {
                                       justifyContent: "center",
                                       display: "flex",
                                       textDecoration: "none",
-                                      color: theme.palette.color.navLink,
+                                      color: theme.palette.background.navLink,
                                       fontSize: 16,
                                       marginTop: 10,
                                     }}

@@ -8,17 +8,9 @@ import { t } from "i18next";
 
 const Terms = () => {
 
-  const [terms, setTrems] = useState([]);
+  const terms = localStorage.getItem("Terms");
   const theme = useTheme();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    api.get_settings().then((setting) => {
-      console.log(setting.data.about_us);
-      setTrems(setting.data.terms_conditions.terms_conditions);
-    });
-  }, []);
-
 
   return (
     <Layout>

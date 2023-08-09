@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-const Partner = ({ partner, loading }) => {
+const Partner = ({ partner }) => {
   const theme = useTheme();
   const slug = slugify(partner.company_name, {
     lower: true, // Convert the slug to lowercase
@@ -83,7 +83,7 @@ const Partner = ({ partner, loading }) => {
       </Box>
       <Link
         key={partner.id}
-        to={"/providers/services/" + partner.partner_id + "/" + slug}
+        to={"/providers/services/" + partner.id + "/" + slug}
         style={{ textDecoration: "none" }}
       >
         <CardMedia sx={{ height: 240 }} image={partner.banner_image} />

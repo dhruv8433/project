@@ -1,10 +1,11 @@
 import { Box, Button, Container, Grid, Modal, Typography } from "@mui/material";
 import React, { useState } from "react";
-import ProfileNavigation from "../Components/Reusable/Profile/ProfileNavigation";
 import { useTheme } from '@mui/material/styles';
 import Pnavigation from "../Components/Reusable/Profile/Pnavigation";
 import { t } from "i18next";
 import Layout from "../Components/layout/Layout";
+import { API_URL } from "../config/config";
+import { toast } from "react-toastify";
 
 const DeleteAccount = () => {
   const theme = useTheme();
@@ -12,9 +13,30 @@ const DeleteAccount = () => {
 
   document.title = "Delete account | eDemand"
 
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.assign('/');
+  const handleDeleteAccount = () => {
+    var myHeaders = new Headers();
+    const token = localStorage.getItem("Token");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch(`${API_URL}/delete_user_account`, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        console.log(result)
+        toast.success(result.message);
+      })
+      .catch(error => console.log('error', error));
+
+      handleClose();
+      window.location.href("/");
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("ContactInfo");
+      localStorage.removeItem("Token");
   };
 
   const handleClose = () => {
@@ -87,7 +109,7 @@ const DeleteAccount = () => {
                           >
                             {t("Are you sure you want to Delete This Account?")}
                           </Typography>
-                          <Button variant="contained" color="error" onClick={handleLogout} sx={{ mt: 2 }}>
+                          <Button variant="contained" color="error" onClick={handleDeleteAccount} sx={{ mt: 2 }}>
                             {t("Delete")}
                           </Button>
                           <Button onClick={handleClose} sx={{ mt: 2 }}>

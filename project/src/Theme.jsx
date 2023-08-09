@@ -10,8 +10,8 @@ const lightTheme = createTheme({
       main: "#f48fb1",
     },
     background: {
-      paper: "#f2f1f6", // Set the color of the paper background
-      box: "white",
+      paper: "#f2f1f6",
+      box: "#ffffff",
       card: "white",
       addressBox: "#Fdfdfd",
       input: "white",
@@ -26,7 +26,8 @@ const lightTheme = createTheme({
       logo: "blue",
       catLink: 'black',
       secondary: '#575757',
-      phone: "#2664f7"
+      phone: "#2664f7",
+      text: "white"
       // inputTag: "black"
     },
     fonts: {
@@ -69,6 +70,7 @@ const darkTheme = createTheme({
       catLink: "white",
       secondary: "white",
       phone: "white",
+      text: "black"
 
       // inputTag: "black",
     },

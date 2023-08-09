@@ -12,9 +12,19 @@ const HomeFinal = () => {
     const [slider, setSlider] = useState([]);
     const [categories, setCategories] = useState([]);
     const [sections, setSections] = useState([]);
+    const [aboutUs, setAboutUs] = useState([]);
 
     //for displayig skeleton we use loading and setLoading state
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        api.get_settings().then((setting) => {
+            console.log(setting.data.about_us);
+            localStorage.setItem("About_us",setting.data.about_us.about_us);
+            localStorage.setItem("Privacy",setting.data.privacy_policy.privacy_policy);
+            localStorage.setItem("Terms",setting.data.terms_conditions.terms_conditions);
+        });
+    }, []);
 
     // fetching all section that required for ourr home screen data
     function fetchHome() {
@@ -29,7 +39,7 @@ const HomeFinal = () => {
             .catch((error) => console.log(error));
     }
 
-    //fetchign cart if user is already registered and log out than when they back their bookmark here
+    //fetching cart if user is already registered and log out than when they back their bookmark here
     function bookmark() {
         api.get_bookmarks()
             .then((response) => {
@@ -49,9 +59,13 @@ const HomeFinal = () => {
 
     useEffect(() => {
         fetchHome();
+    }, []);
+
+    const login = localStorage.getItem("isLoggedIn")
+    if (login) {
         bookmark();
         cart();
-    }, []);
+    }
 
     const theme = useTheme();
 
@@ -86,7 +100,7 @@ const HomeFinal = () => {
                 </div>
             ) : (
                 sections.map((section) => {
-                    if (section.section_type === 'top_rated_partner') {
+                    if (section.section_type === 'partners' || section.section_type === 'top_rated_partner') {
                         return <ProviderSection key={section.id} Provider={section} loading={loading} />
                     }
                     else if (section.section_type === 'sub_categories') {

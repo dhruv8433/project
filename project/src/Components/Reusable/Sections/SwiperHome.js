@@ -1,4 +1,4 @@
-import { Box, Button, Container, Divider, IconButton, InputBase,Paper,Skeleton,Typography,TextField, Backdrop } from "@mui/material";
+import { Box, Button, Container, Divider, IconButton, InputBase, Paper, Skeleton, Typography, TextField, Backdrop } from "@mui/material";
 import React, { useRef, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
@@ -164,6 +164,7 @@ const SwiperHome = ({ sliderData, loading }) => {
           lower: true,
         });
 
+        //we got partner name and partner id
         const url = `/providers/services/${providerId}/${providerName}`;
         window.location.href = url;
       }
@@ -184,7 +185,7 @@ const SwiperHome = ({ sliderData, loading }) => {
         });
 
         const url = `/providers/services/${providerId}/${providerName}`;
-        window.location.href = url;
+        navigate(url);
       }
     }
   };
@@ -481,7 +482,7 @@ const SwiperHome = ({ sliderData, loading }) => {
     // providerAvailable();
   };
 
-  function handleSelectLocation () {
+  function handleSelectLocation() {
     searchClicked();
     setVisible(true);
   }
@@ -575,7 +576,8 @@ const SwiperHome = ({ sliderData, loading }) => {
                 }
                 inputProps={{ "aria-label": "search google maps" }}
                 value={locationName}
-                onChange={(e) => {setLocationName(e.target.value)
+                onChange={(e) => {
+                  setLocationName(e.target.value)
                 }}
               />
               <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
@@ -752,13 +754,14 @@ const SwiperHome = ({ sliderData, loading }) => {
                 freeSolo
                 id="free-solo-2-demo"
                 disableClearable
-                options={providerOptions.map((option) => option.company_name)}
+                options={providerOptions} // Assuming providerOptions is an array of objects containing company_name and image properties
+                getOptionLabel={(option) => option.company_name}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     variant="standard"
                     sx={{ border: 0, width: "160px" }}
-                    placeholder="search providers"
+                    placeholder="Search providers"
                     InputProps={{
                       ...params.InputProps,
                       type: "search",
@@ -766,8 +769,21 @@ const SwiperHome = ({ sliderData, loading }) => {
                     }}
                   />
                 )}
+                renderOption={(props, option) => (
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <img
+                      src={option.image_of_the_service} // Assuming option.image contains the image URL
+                      alt={option.company_name}
+                      style={{ width: 24, height: 24, marginRight: 8 }}
+                    />
+                    <li {...props}>
+                      {option.company_name}
+                    </li>
+                  </div>
+                )}
                 onChange={handleInputChange}
                 onKeyPress={handleInputChange}
+                onBlur={handleInputChange}
               />
 
               <IconButton
@@ -782,7 +798,6 @@ const SwiperHome = ({ sliderData, loading }) => {
           </Box>
         </Container>
       </Box>
-      <ToastContainer />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Skeleton } from "@mui/material";
+import { Box, Card, CardContent, Grid, Rating, Skeleton, Typography } from "@mui/material";
 
 //every page's skeleton come from here 
 export const SkeletonSwiperSlide = () => {
@@ -125,3 +125,39 @@ export const SkeletonSubCategory = () => {
     </Box>
   );
 };
+
+export const ProviderFlexSkeleton = () => {
+  return(
+    <Card sx={{ boxShadow: "none", display: "flex", border: "1px solid gray" }}>
+          <Skeleton height={160} width={160} variant="rectangular" />
+          <Skeleton
+            variant="circular"
+            width={50}
+            height={50}
+            sx={{ ml: -3, mt: 6 }}
+            animation="wave"
+          />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+            }}
+          >
+            <Grid container alignItems="center" sx={{ ml: 1 }}>
+              <Grid item xs>
+                <Typography gutterBottom variant="h6" fontSize={18}>
+                  <Skeleton animation="wave" width="60%" />
+                </Typography>
+              </Grid>
+            </Grid>
+            <Box display={"flex"}>
+              <Rating readOnly value={0} />
+              <Typography variant="p">
+                <Skeleton animation="wave" width={40} />
+              </Typography>
+            </Box>
+          </Box>
+        </Card>
+  )
+}

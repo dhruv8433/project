@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
-import { ThemeProvider } from "@emotion/react";
+// import {  } from "@emotion/react";
 import { darkTheme, lightTheme } from "../../Theme";
 import { Paper } from "@mui/material";
-
+import { ThemeProvider } from "@mui/material/styles";
 const Layout = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
 

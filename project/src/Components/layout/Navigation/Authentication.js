@@ -13,13 +13,20 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { API_URL } from "../../../config/config";
 import { t } from "i18next";
+import EditProfile from "../../Reusable/Profile/EditProfile";
 const Authentication = ({ login, isLogin }) => {
   const [otp, setOtp] = useState("");
   const [ph, setPh] = useState("");
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const [user, setUser] = useState(null);
+  const [verify, setVerify] = useState("");
   const theme = useTheme();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const OpenMenu = () => {
+    setIsMenuOpen(true)
+  };
 
   // function for Capture Code Verification
   function onCaptchVerify() {
@@ -47,8 +54,9 @@ const Authentication = ({ login, isLogin }) => {
     setLoading(true);
     onCaptchVerify();
     const appVerifier = window.recaptchaVerifier;
+    const phoneNumber = "+" + ph;
 
-    signInWithPhoneNumber(auth, ph, appVerifier)
+    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
         setLoading(false);
@@ -61,11 +69,12 @@ const Authentication = ({ login, isLogin }) => {
       });
   }
 
+
   //function to verify user
   const verifyUser = () => {
     var verifyUser = new FormData();
-    verifyUser.append("mobile", ph)
-    verifyUser.append("country_code", 91);
+    verifyUser.append("mobile", ph.slice(2, 12))
+    verifyUser.append("country_code", +91);
 
     var requestOptions = {
       method: 'POST',
@@ -75,15 +84,17 @@ const Authentication = ({ login, isLogin }) => {
 
     fetch(`${API_URL}/verify_user`, requestOptions)
       .then(response => {
-        if(response.message_code === 101){
-          console.log("Mobile number already registered and Active");
+        if (response.message_code === 101) {
+          setVerify("Registered")
         }
-        else if(response.message_code === 102){
-          console.log("Mobile number is not registered");
+        else if (response.message_code === 102) {
+          setVerify("Not Registerd")
+          setIsMenuOpen(true);
         }
-        else if(response.message_code === 103){
-          console.log("Mobile number is De active");
+        else {
+          setVerify("deactive")
         }
+        console.log(response);
       })
       .catch(error => console.log('error', error));
   }
@@ -91,7 +102,7 @@ const Authentication = ({ login, isLogin }) => {
   //function to getting token when user logged in
   const getToken = () => {
     var formdata = new FormData();
-    formdata.append("mobile", ph.slice(2,12));
+    formdata.append("mobile", ph);
     formdata.append("country_code", "+91");
 
     var requestOptions = {
@@ -102,8 +113,16 @@ const Authentication = ({ login, isLogin }) => {
 
     fetch(`${API_URL}/manage_user`, requestOptions)
       .then((response) => response.json())
-      .then((result) => localStorage.setItem("Token", result.token))
+      .then((result) => {
+        localStorage.setItem("Token", result.token)
+        toast.success(result.message)
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      })
       .catch((error) => console.log("error", error));
+
+
   };
 
   //Function for Otp Verification
@@ -124,14 +143,11 @@ const Authentication = ({ login, isLogin }) => {
           getToken();
           setUser(res.user);
           isLogin(false);
-          toast.success("Login success..!");
-          // setTimeout(() => {
-          //   // window.location.reload();
-          // }, 1000);
         } else {
           setLoading(false);
           toast.error("Invalid verification code. Please try again!");
         }
+
       })
       .catch((err) => {
         console.log(err);
@@ -185,6 +201,8 @@ const Authentication = ({ login, isLogin }) => {
       }
     };
   }, [intervalId]);
+
+  let open = true;
 
   return (
     <div>
@@ -306,6 +324,38 @@ const Authentication = ({ login, isLogin }) => {
                         {t("Verify and Process")}
                       </Button>
                     </Button>
+
+                    {isMenuOpen && (<>
+                      <Backdrop
+                        sx={{
+                          color: "#fff",
+                          zIndex: (theme) => theme.zIndex.drawer + 1,
+                        }}
+                        open={open}
+                      >
+                        <Box
+                          sx={{
+                            background: theme.palette.background.box,
+                            color: "black",
+                            width: "400px",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          <Box
+                            marginLeft={3}
+                            marginRight={3}
+                            marginTop={3}
+                            marginBottom={3}
+                          >
+                            <Box display={"flex"}>
+                              <Typography marginRight={"auto"} color={theme.palette.color.navLink}>{t("Edit Profile")}</Typography>
+                              {<ClearIcon onClick={(handleClose)} sx={{ color: theme.palette.color.navLink }} />}
+                            </Box>
+                            <EditProfile open={open} />
+                          </Box>
+                        </Box>
+                      </Backdrop>
+                    </>)}
                   </>
                 ) : (
                   <>
@@ -399,7 +449,6 @@ const Authentication = ({ login, isLogin }) => {
           </Box>
         </Box>
       </Backdrop>
-      <ToastContainer />
     </div>
   );
 };

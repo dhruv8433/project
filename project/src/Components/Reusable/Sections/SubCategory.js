@@ -1,6 +1,7 @@
 import { Box, Card, Typography } from '@mui/material'
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import slugify from 'slugify'
 import { SwiperSlide } from 'swiper/react'
 
 const SubCategory = ({ subCategory }) => {
@@ -9,7 +10,7 @@ const SubCategory = ({ subCategory }) => {
             <div key={subCategory.id}>
                 {/* think company name where to render  */}
                 <Link
-                    to={`/providers/services/${subCategory.parent_id}/${subCategory.company_name}`}
+                    to={`sub-categories/${subCategory.id}/${slugify(subCategory.name).toLowerCase()}`}
                     style={{ textDecoration: "none" }}
                 >
                     <Card

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -11,6 +11,8 @@ import { useTheme } from '@mui/material/styles';
 import Pnavigation from "../Components/Reusable/Profile/Pnavigation";
 import { t } from "i18next";
 import Layout from "../Components/layout/Layout";
+import { API_URL } from "../config/config";
+import { toast } from "react-toastify";
 
 const Logout = () => {
   const theme = useTheme();
@@ -20,11 +22,14 @@ const Logout = () => {
 
   const handleLogout = () => {
     // Perform logout actions here
+    logout()
     localStorage.setItem("ContactInfo", "");
     localStorage.setItem("isLoggedIn", "");
     localStorage.setItem("Token", "");
     handleClose();
-    window.location.assign('/');
+    setTimeout(() => {
+      window.location.assign('/');
+    }, 2000);
   };
 
   const handleClose = () => {
@@ -34,6 +39,29 @@ const Logout = () => {
   const handleOpen = () => {
     setOpen(true);
   };
+
+  function logout() {
+    var myHeaders = new Headers();
+    const token = localStorage.getItem("Token");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    var formdata = new FormData();
+    formdata.append("all_device", "true");
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    fetch(`${API_URL}/logout`, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        toast.success(result.message)
+      })
+      .catch(error => console.log('error', error));
+  }
 
   return (
     <Layout>

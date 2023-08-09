@@ -7,18 +7,9 @@ import { t } from "i18next";
 import api from "../../../API/Fetch_data_Api";
 
 function AboutPage() {
-  const [aboutUs, setAboutUs] = useState([]);
-
   const navigate = useNavigate();
   const theme = useTheme();
-
-  useEffect(() => {
-    api.get_settings().then((setting) => {
-      console.log(setting.data.about_us);
-      setAboutUs(setting.data.about_us.about_us);
-    });
-  }, []);
-
+  const aboutUs = localStorage.getItem("About_us")
   return (
     <>
       <Box

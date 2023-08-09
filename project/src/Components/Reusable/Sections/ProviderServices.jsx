@@ -23,12 +23,13 @@ import GradeIcon from "@mui/icons-material/Grade";
 import CustomerReview from "./CustomerReview";
 import StarIcon from "@mui/icons-material/Star";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { useTheme } from '@mui/material/styles';
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { Transert } from "../../../actions/action";
 import { t } from "i18next";
 import Layout from "../../layout/Layout";
+import { API_URL } from "../../../config/config";
+import { useTheme } from "@mui/material/styles";
 
 const ProviderServices = ({ match }) => {
   const navigate = useNavigate();
@@ -52,32 +53,24 @@ const ProviderServices = ({ match }) => {
     console.info("clicked", item);
 
     if (islogined == "") {
-      toast.error("Please Login...")
+      toast.error("Please Login...");
       return;
     }
     const cartData = JSON.parse(localStorage.getItem("cart")) || [];
-    const itemQuantities = JSON.parse(localStorage.getItem("itemQuantities")) || {};
+    const itemQuantities =
+      JSON.parse(localStorage.getItem("itemQuantities")) || {};
 
     if (islogined) {
       if (item.id in itemQuantities) {
         toast.info("Item already in cart");
         return;
-      } else
-        toast.success("Added to cart!")
+      } else toast.success("Added to cart!");
     }
 
     dispatch(Transert(item));
-
-    // backup 
-    // const cartData = JSON.parse(localStorage.getItem("cart")) || [];
-    // cartData.push(item);
-    // localStorage.setItem("cart", JSON.stringify(cartData));
-
-    // const itemQuantities =
-    //   JSON.parse(localStorage.getItem("itemQuantities")) || {};
     cartData.push(item);
     localStorage.setItem("cart", JSON.stringify(cartData));
-    localStorage.setItem("cart-booking",JSON.stringify(cartData));
+    localStorage.setItem("cart-booking", JSON.stringify(cartData));
 
     // Increment the item quantity by 1
     itemQuantities[item.id] = 0;
@@ -105,8 +98,10 @@ const ProviderServices = ({ match }) => {
 
   async function allData() {
     var formdata = new FormData();
-    formdata.append("latitude", "23.2507356");
-    formdata.append("longitude", "69.6689201");
+    const lat = localStorage.getItem("Lat");
+    const lng = localStorage.getItem("Lng");
+    formdata.append("latitude", lat);
+    formdata.append("longitude", lng);
     formdata.append("partner_id", `${partner_id}`);
     formdata.append("company_name", `${company_name}`);
 
@@ -116,35 +111,35 @@ const ProviderServices = ({ match }) => {
       redirect: "follow",
     };
 
-    const response = await fetch(
-      "https://edemand.wrteam.me/api/v1/get_services",
-      requestOptions
-    );
+    const response = await fetch(`${API_URL}/get_services`, requestOptions);
+
     const result = await response.json();
-    // console.log(result);
     setParentPicture(partner_id);
-    // console.log("Stored ID :" + parentPicture);
     return result;
   }
 
   useEffect(() => {
-
-    document.title = `${company_name} | edemand`
+    document.title = `${company_name} | edemand`;
 
     allData()
       .then((response) => setData(response.data))
-      .then((response) => setIsLoading(true))
-      // .then((response) => console.log(response));
+      .then((response) => setIsLoading(true));
+    // .then((response) => console.log(response));
     api
       .get_providers()
       .then((response) => setProvider(response.data))
-      .then((response) => setIsLoading(true))
-      // .then((response) => console.log(response));
+      .then((response) => setIsLoading(true));
+    // .then((response) => console.log(response));
   }, []);
 
   return (
     <Layout>
-      <Box bgcolor={theme.palette.background.heading} paddingTop={"15px"} paddingBottom={"15px"} mb={"20px"}>
+      <Box
+        bgcolor={theme.palette.background.box}
+        paddingTop={"15px"}
+        paddingBottom={"15px"}
+        mb={"20px"}
+      >
         <Container maxWidth="lg">
           <Breadcrumbs
             aria-label="breadcrumb"
@@ -168,17 +163,17 @@ const ProviderServices = ({ match }) => {
           </Breadcrumbs>
           {isLoading ? (
             <>
-              {
-                provider.map((response) => {
-                  if (response.partner_id == partner_id)
-                    return (
-                      <> <Typography variant="h4" gutterBottom>
+              {provider.map((response) => {
+                if (response.partner_id == partner_id)
+                  return (
+                    <>
+                      {" "}
+                      <Typography variant="h4" gutterBottom>
                         <strong>{response.company_name}</strong>
                       </Typography>
-                      </>
-                    )
-                })
-              }
+                    </>
+                  );
+              })}
             </>
           ) : (
             <Skeleton sx={{ width: "200px", height: "50px" }} />
@@ -190,7 +185,7 @@ const ProviderServices = ({ match }) => {
           <Grid item xs={12} md={7}>
             <Box
               sx={{
-                background: theme.palette.background.box,
+                backgroundColor: theme.palette.background.box,
                 borderRadius: "10px",
                 mb: 5,
               }}
@@ -218,8 +213,12 @@ const ProviderServices = ({ match }) => {
                                 }}
                               >
                                 {/* PC SCREEN ONLY  */}
-                                <Grid container display={{ xs: "none", sm: "flex" }} spacing={3}>
-                                  <Grid item md={4} >
+                                <Grid
+                                  container
+                                  display={{ xs: "none", sm: "flex" }}
+                                  spacing={3}
+                                >
+                                  <Grid item md={4}>
                                     <CardMedia
                                       image={response.image_of_the_service}
                                       alt="hi"
@@ -238,7 +237,12 @@ const ProviderServices = ({ match }) => {
                                           textAlign: "start",
                                         }}
                                       >
-                                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                        <Box
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                          }}
+                                        >
                                           <Typography
                                             color={"#2560FC"}
                                             sx={{ marginRight: "auto" }}
@@ -285,15 +289,18 @@ const ProviderServices = ({ match }) => {
                                             </Button>
                                           </Box>
                                         </Box>
-
                                       </Box>
                                     </CardContent>
                                   </Grid>
                                 </Grid>
 
                                 {/* MOBILE SCREEN ONLY  */}
-                                <Grid container display={{ xs: "flex", sm: "none" }} spacing={3}>
-                                  <Grid item md={12} >
+                                <Grid
+                                  container
+                                  display={{ xs: "flex", sm: "none" }}
+                                  spacing={3}
+                                >
+                                  <Grid item md={12}>
                                     <CardMedia
                                       image={response.image_of_the_service}
                                       alt="hi"
@@ -312,7 +319,12 @@ const ProviderServices = ({ match }) => {
                                           textAlign: "start",
                                         }}
                                       >
-                                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                        <Box
+                                          sx={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                          }}
+                                        >
                                           <Typography
                                             color={"#2560FC"}
                                             sx={{ marginRight: "auto" }}
@@ -359,12 +371,10 @@ const ProviderServices = ({ match }) => {
                                             </Button>
                                           </Box>
                                         </Box>
-
                                       </Box>
                                     </CardContent>
                                   </Grid>
                                 </Grid>
-
                               </Card>
                               <Divider />
                             </Box>
@@ -434,7 +444,9 @@ const ProviderServices = ({ match }) => {
                         {response.partner_id === partner_id ? (
                           <>
                             <Card
-                              sx={{ background: theme.palette.background.box }}
+                              sx={{
+                                backgroundColor: theme.palette.background.box,
+                              }}
                             >
                               <CardMedia
                                 sx={{ height: 250 }}
@@ -549,7 +561,7 @@ const ProviderServices = ({ match }) => {
             </Box>
             <Box
               sx={{
-                background: theme.palette.background.box,
+                backgroundColor: theme.palette.background.box,
                 borderRadius: "10px",
                 mb: 3,
                 mt: 3,

@@ -6,13 +6,14 @@ import {
   IconButton,
   Skeleton,
   Typography,
+  useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import "swiper/swiper.min.css";
 import "swiper/css/navigation";
-import { useTheme } from "@emotion/react";
+// import { useTheme } from "@emotion/react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { NavLink, Link } from "react-router-dom";
