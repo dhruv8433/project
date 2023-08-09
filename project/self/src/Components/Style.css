@@ -1,0 +1,33 @@
+nav{
+    margin-left: 78%;
+    height: 30px;
+    justify-content: center ;
+    text-align: center;
+    padding-top: 15px;
+}
+
+.Navigation{
+    display: flex;
+}
+
+nav a{
+    text-decoration: none;
+    color: white;
+    margin: 10px 10px;
+}
+
+.Navigation{
+    background-color: gray;
+    color: white;
+}
+body{
+    background-color: lavender;
+}
+
+.div{
+    border: 2px solid black;
+    margin: 20px 10px;
+    border-radius: 10px;
+    width: 80%;
+    margin-left: 10%;
+}

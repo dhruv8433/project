@@ -1,0 +1,81 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.divnav{
+    background-color: gray;
+    display: flex;
+    width: 100%;
+}
+.divnav nav{
+    padding: 10px;
+}
+
+.divnav ul{
+    padding-top: 20px;
+    margin-left: 40px;
+    font-size: 20px;
+}
+
+.divnav nav ul{
+    padding: 10px 10px;
+    margin-left: 330%;
+}
+
+.divnav nav ul a{
+    text-decoration: none;
+    margin: 10px 15px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+body{
+    background-color: lightgrey;
+}
+
+.blogs{
+    margin-left: 3%;
+    margin-top: 5%;
+    margin-right: 3%;
+}
+
+.mydiv{
+    margin: 30px 10px;
+    border: 2px solid black;
+    padding: 10px 10px;
+    width: 100%;
+}
+
+.flexdisplay{
+    display: flex;
+}
+
+.flexdisplay .btn{
+    right: 26px;
+    /* margin: 10px 10px; */
+    position: absolute;
+}
+
+.flexdisplay .btn a{
+    margin-left: 5px;
+    height: 30px;
+    width: 60px;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 2px 12px;
+}
+
+#delete:hover{
+    background-color: red;
+    color: white;
+}
+
+#edit:hover{
+    background-color: rgb(22, 180, 22);
+    color: white;
+}
+
+.mydiv a{
+    text-decoration: none;
+    color: blue;
+}
