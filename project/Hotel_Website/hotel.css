@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&family=Lobster&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.navbar{
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding-left: 2%;
+}
+
+nav{
+    align-items: center;
+    justify-content: center;
+}
+
+nav ul a{
+    margin: 2%;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+nav ul{
+    text-align: left;
+    justify-content: center;
+}
+
+img{
+    padding-left: 5%;
+    padding-right: 5%;
+    border: 2px solid white;
+    border-radius: 5px;
+}
+
+.main{
+    left: 115px;
+    /* right: 500px; */
+    top: 100px;
+    position: absolute;
+    font-size: 2.5rem;
+    color: white;
+    font-family: 'Lobster', cursive;
+}
+
+.main p{
+    font-size: 20px;
+}
+
+.extra{
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: cornsilk;
+}
+
+.extra h1{
+    text-align: center;
+    padding-top: 3%;
+    font-size: 3rem;
+    padding-bottom: 3%;
+}
+
+.boxes{
+    margin-left: 5%;
+    display: flex;
+    height: 25%;
+    width: 25%;
+}
+
+.flexbox1{
+    margin: 20%;
+    justify-content: flex-start;
+}
+.flexbox2{
+    margin : 20%;
+}
+.flexbox3{
+    margin: 20%;
+}
+
+p{
+    font-family: 'Baloo 2', cursive;
+}
+
+.dishes{
+    margin-left: 5%;
+    display: flex;
+    height: 25%;
+    width: 25%;
+}
+
+.foods{
+    padding-top: 0.5%;
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: lavender;
+}
+
+.foods h1{
+    text-align: center;
+    padding-top: 3%;
+    font-size: 3rem;
+    padding-bottom: 3%;
+}
+
+.dishesnew{
+    margin-left: 5%;
+    display: flex;
+    height: 25%;
+    width: 25%;
+}
+
+.dishes1{
+    margin: 20%;
+}
+.dishes2{
+    margin: 20%;
+}
+.dishes3{
+    margin: 20%;
+}
+.dishes4{
+    margin: 20%;
+}
+.dishes5{
+    margin: 20%;
+}
+.dishes6{
+    margin: 20%;
+}
+
+.btn:hover{
+    color: red;
+}
