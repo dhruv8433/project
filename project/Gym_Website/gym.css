@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600&family=Baloo+Bhaijaan+2&family=Fira+Sans:ital,wght@1,600&family=Lobster&family=Passions+Conflict&display=swap');
+*{  
+    padding: 0;
+    margin: 0;
+}
+
+html{
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+}
+
+
+nav{
+    font-family: 'Baloo 2', cursive;
+    display: inline-flex;
+    padding-left: 40%;
+}
+
+nav a{
+    font-family: 'Baloo 2', cursive;
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    padding-left: 50px;
+    font-size: 1rem;
+}
+
+.logo{
+    font-family: 'Baloo 2', cursive;
+    font-weight: bolder;
+    color: white;
+    font-size: 3rem;  
+    text-decoration: none; 
+}
+
+
+body{
+    background-repeat: no-repeat;
+    background-color: black;
+}
+
+.navigation{
+    background-color: black;
+}
+
+.heading{
+    color: white;
+    position: absolute;
+    top: 180px;
+    left: 40px;
+    font-size: 2rem;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.about{
+    top: 350px;
+    position: absolute;
+    left: 40px;
+    color: white;
+    font-family: 'Cedarville Cursive', cursive;
+    font-size: 1rem;
+}
+
+.about a{
+    color: white;
+    font-size: 2rem;
+    font-family: 'Baloo 2', cursive;
+    text-decoration: none;
+    border: white solid 2px;
+    border-radius: 8px;
+    padding: 2px 159px;
+    margin: 10px -5px;
+}
+
+.about a:hover{
+    color: red;
+}
+
+nav a:hover{
+    color: red;
+}
+
+.footer{
+    top: 100%;
+    right: 50%;    
+    color: white;
+    text-align: center;
+}
